@@ -1,0 +1,7 @@
+{
+  "name": "UploadData",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}
