@@ -1,9 +1,9 @@
 <template>
-	<view class="">
+	<view>
 		<!-- 1.顶部导航栏 -->
 		<u-navbar bgColor="#f2c7c0">
 			<view slot="left" class="leftSolt">
-				<u-icon name="map" size="26" color="#000000"></u-icon>
+				<u-icon name="map-fill" size="32" color="#000000"></u-icon>
 				<view style="margin-left: 5rpx;margin-right: 8rpx;color: dimgray;font-size: 28rpx;">仙林大道163号</view>
 				<u-icon name="arrow-down-fill" color="#000000" size="15px"></u-icon>
 			</view>

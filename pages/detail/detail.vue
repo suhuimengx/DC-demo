@@ -153,20 +153,38 @@
 						message: '请选择最晚到达时间'
 					})
 				} else {
+					let item = {
+						userId: 100, //用户id
+						originId: this.originId, //出发地id
+						destId: this.destId, //目的地id
+						DepartureTime: this.DepartureTime, //预计出发时间，13位时间戳
+						waitTime: this.waitTime, //出发时最长等待时间
+						ArrivalTime: this.ArrivalTime, //最晚到达时间，13位时间戳
+						numDemand: this.numDemand //出行数量需求
+					}
+					//上传到数据库，上传完成后自动生成订单id
 					uniCloud.callFunction({
 						name: 'UploadData',
-						data: {
-							originId: this.originId, //出发地id
-							destId: this.destId, //目的地id
-							DepartureTime: this.DepartureTime, //预计出发时间，13位时间戳
-							waitTime: this.waitTime, //出发时最长等待时间
-							ArrivalTime: this.ArrivalTime, //最晚到达时间，13位时间戳
-							numDemand: this.numDemand //出行数量需求
-						}
+						data: item
 					}).then(res => {
-						console.log(res)
+						//将订单id添加到item对象中
+						item.orderId = res.result.id;
+						console.log(item);
+						this.saveHistory(item);
 					})
+					// uni.navigateTo({
+					// 	url: "/pages/travel/travel"
+					// })
 				}
+			},
+			//将出行数据存到本地缓存
+			saveHistory(item) {
+				let orderTime = Number(new Date());
+				item.orderTime = orderTime;
+				let historyArr = uni.getStorageSync('travelArr') || [];
+				console.log(historyArr)
+				historyArr.unshift(item);
+				uni.setStorageSync('travelArr', historyArr);
 			}
 		}
 	}
@@ -214,6 +232,7 @@
 
 	.waitTimeSelector {
 		margin-top: 42rpx;
+		touch-action: none;
 	}
 
 	.orderButton {
