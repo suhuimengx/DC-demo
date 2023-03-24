@@ -60,6 +60,7 @@
 }
 .waitTimeSelector {
   margin-top: 42rpx;
+  touch-action: none;
 }
 .orderButton {
   margin-left: 56rpx;

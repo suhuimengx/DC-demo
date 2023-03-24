@@ -1,1 +1,1 @@
-<view></view>
+<view><u-navbar vue-id="380011e0-1" bgColor="#f2c7c0" title="我的" bind:__l="__l" vue-slots="{{['left']}}"><view class="leftSolt" slot="left"><u-icon vue-id="{{('380011e0-2')+','+('380011e0-1')}}" name="calendar-fill" size="32" color="#000000" bind:__l="__l"></u-icon></view></u-navbar><u-button style="margin-top:80px;" vue-id="380011e0-3" text="清除缓存" color="#d498b3" data-event-opts="{{[['^click',[['clearCache']]]]}}" bind:click="__e" bind:__l="__l"></u-button></view>

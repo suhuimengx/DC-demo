@@ -153,8 +153,9 @@
 						message: '请选择最晚到达时间'
 					})
 				} else {
+					let userid = uni.getStorageSync('userId').result;
 					let item = {
-						userId: 100, //用户id
+						userId: userid, //用户id
 						originId: this.originId, //出发地id
 						destId: this.destId, //目的地id
 						DepartureTime: this.DepartureTime, //预计出发时间，13位时间戳

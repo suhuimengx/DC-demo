@@ -10,7 +10,8 @@
 		</u-navbar>
 		<!-- 2.简略地图部分 -->
 		<view class="map">
-			<image :src="mapSrc" mode="aspectFit" :draggable="true"></image>
+			<map style="width: 100%; height: 800rpx;" :latitude="latitude" :longitude="longitude"></map>
+			<!-- <image src="/static/index-img.png"></image> -->
 		</view>
 		<!-- 3.地址框部分 -->
 		<!-- 3.1选择出发地 -->
@@ -57,11 +58,27 @@
 				transferStatus: false, //判断地址是否完成选择
 				columns: [
 					["北京", "南京", "成都", "西安"]
-				]
+				],
+				latitude: 39.909,
+				longitude: 116.39742
 			};
 		},
 		onLoad() {
-
+			uni.login({
+				provider: 'weixin',
+				success: (res) => {
+					let code = res.code;
+					uniCloud.callFunction({
+						name: 'logIn',
+						data: {
+							code: code
+						}
+					}).then(openid => {
+						console.log(openid);
+						uni.setStorageSync('userId', openid);
+					})
+				}
+			})
 		},
 		methods: {
 			//选择出发地后触发事件
@@ -109,6 +126,7 @@
 	}
 
 	.map {
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 		justify-content: center;

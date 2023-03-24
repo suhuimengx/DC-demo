@@ -1,8 +1,8 @@
 const db = uniCloud.database();
 exports.main = async (event, context) => {
-	const dbDemo = db.collection('dc-demo');
+	const dbDemo = await db.collection('dc-demo');
 	//上传收集到的数据
-	let uploadRes = dbDemo.add({
+	let uploadRes = await dbDemo.add({
 		api: 'upload',
 		...event
 	})
