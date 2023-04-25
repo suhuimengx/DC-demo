@@ -418,9 +418,9 @@ var _default = {
           console.log(item);
           _this.saveHistory(item);
         });
-        // uni.navigateTo({
-        // 	url: "/pages/travel/travel"
-        // })
+        uni.switchTab({
+          url: "/pages/index/index"
+        });
       }
     },
     //将出行数据存到本地缓存
@@ -428,7 +428,7 @@ var _default = {
       var orderTime = Number(new Date());
       item.orderTime = orderTime;
       var historyArr = uni.getStorageSync('travelArr') || [];
-      console.log(historyArr);
+      // console.log(historyArr);
       historyArr.unshift(item);
       uni.setStorageSync('travelArr', historyArr);
     }

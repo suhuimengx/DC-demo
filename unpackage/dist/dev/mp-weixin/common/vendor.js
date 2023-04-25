@@ -9948,7 +9948,7 @@ var k = "development" === "development",
         "192.168.31.52"
     ],
     "debugPort": 9000,
-    "initialLaunchType": "local",
+    "initialLaunchType": "remote",
     "servePort": 7000,
     "skipFiles": [
         "<node_internals>/**",

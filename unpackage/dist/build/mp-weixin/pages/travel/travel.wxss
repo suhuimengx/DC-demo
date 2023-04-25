@@ -1,0 +1,1 @@
+.leftSolt{display:flex;align-items:center}.travelInfo{margin-top:100px}.travelInfo .itemInfo{border:2px solid #999497;margin:24rpx 24rpx;background:#f2ebee}

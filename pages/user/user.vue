@@ -7,7 +7,7 @@
 			</view>
 		</u-navbar>
 		<!-- 清除缓存按钮 -->
-		<u-button text="清除缓存" style="margin-top: 80px;" color="#d498b3" @click="clearCache"></u-button>
+		<button style="margin-top: 200px;" color="#d498b3" type="primary" @click="clearCache">清除缓存</button>
 	</view>
 </template>
 

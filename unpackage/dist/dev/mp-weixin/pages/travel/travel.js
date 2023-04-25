@@ -218,7 +218,12 @@ var _default = {
       columns: [["北京", "南京", "成都", "西安"]]
     };
   },
-  onLoad: function onLoad() {},
+  onLoad: function onLoad() {
+    this.getHistory();
+  },
+  onInit: function onInit() {
+    this.getHistory();
+  },
   onShow: function onShow() {
     this.getHistory();
     console.log(this.travelArr);

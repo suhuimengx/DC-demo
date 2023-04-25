@@ -32,7 +32,10 @@
 			};
 		},
 		onLoad() {
-
+			this.getHistory();
+		},
+		onInit() {
+			this.getHistory();
 		},
 		onShow() {
 			this.getHistory();
@@ -53,7 +56,7 @@
 	}
 
 	.travelInfo {
-		margin-top: 54px;
+		margin-top: 100px;
 
 		.itemInfo {
 			border: 2px solid #999497;

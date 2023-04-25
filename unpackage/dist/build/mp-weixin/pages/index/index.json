@@ -1,0 +1,12 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uni_modules/uview-ui/components/u-navbar/u-navbar",
+    "u-icon": "/uni_modules/uview-ui/components/u-icon/u-icon",
+    "u-search": "/uni_modules/uview-ui/components/u-search/u-search",
+    "u-picker": "/uni_modules/uview-ui/components/u-picker/u-picker",
+    "u-text": "/uni_modules/uview-ui/components/u-text/u-text",
+    "u-button": "/uni_modules/uview-ui/components/u-button/u-button",
+    "u-toast": "/uni_modules/uview-ui/components/u-toast/u-toast"
+  }
+}

@@ -29,7 +29,7 @@
   align-items: center;
 }
 .travelInfo {
-  margin-top: 54px;
+  margin-top: 100px;
 }
 .travelInfo .itemInfo {
   border: 2px solid #999497;

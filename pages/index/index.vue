@@ -25,7 +25,7 @@
 		<!-- 3.2选择目的地 -->
 		<view class="searchAddr">
 			<u-search :placeholder="destPlace" :showAction="false" height="80rpx" searchIcon="play-right"
-				:disabled="true" @click="showDest=true" borderColor="#313c4b" searchIconColor="black" :style="">
+				:disabled="true" @click="showDest=true" borderColor="#313c4b" searchIconColor="black">
 			</u-search>
 			<u-picker :show="showDest" :columns="columns" title="目的地" @cancel="showDest = false" @confirm="confirmDest">
 			</u-picker>
@@ -41,6 +41,8 @@
 				size="large"></u-button>
 		</view>
 		<u-toast ref="uToast"></u-toast>
+
+		<button @click="test">测试</button>
 	</view>
 </template>
 
@@ -114,6 +116,17 @@
 						url: `/pages/detail/detail?originId=${this.originIndex}&destId=${this.destIndex}`
 					});
 				}
+			},
+			test() {
+				let uid = 'o3vDU5cxZbg1ZgaBnQk9AtZW50rg';
+				uniCloud.callFunction({
+					name: "DownloadData",
+					data: {
+						userId: uid
+					}
+				}).then(res => {
+					console.log(res)
+				})
 			}
 		}
 	}
