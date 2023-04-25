@@ -313,6 +313,17 @@ var _default = {
           url: "/pages/detail/detail?originId=".concat(this.originIndex, "&destId=").concat(this.destIndex)
         });
       }
+    },
+    test: function test() {
+      var uid = 'o3vDU5cxZbg1ZgaBnQk9AtZW50rg';
+      uniCloud.callFunction({
+        name: "DownloadData",
+        data: {
+          userId: uid
+        }
+      }).then(function (res) {
+        console.log(res);
+      });
     }
   }
 };

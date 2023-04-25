@@ -11,7 +11,6 @@
 		<!-- 2.简略地图部分 -->
 		<view class="map">
 			<map style="width: 100%; height: 800rpx;" :latitude="latitude" :longitude="longitude"></map>
-			<!-- <image src="/static/index-img.png"></image> -->
 		</view>
 		<!-- 3.地址框部分 -->
 		<!-- 3.1选择出发地 -->
@@ -42,7 +41,6 @@
 		</view>
 		<u-toast ref="uToast"></u-toast>
 
-		<button @click="test">测试</button>
 	</view>
 </template>
 
