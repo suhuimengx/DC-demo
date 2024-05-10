@@ -1,0 +1,7 @@
+{
+  "name": "getCount",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

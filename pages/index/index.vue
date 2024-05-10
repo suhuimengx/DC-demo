@@ -10,7 +10,7 @@
 		</u-navbar>
 		<!-- 2.简略地图部分 -->
 		<view class="map">
-			<map style="width: 100%; height: 800rpx;" :latitude="latitude" :longitude="longitude"></map>
+			<map style="width: 100%; height: 800rpx;" :latitude="latitude" :longitude="longitude" enable-satellite="true"></map>
 		</view>
 		<!-- 3.地址框部分 -->
 		<!-- 3.1选择出发地 -->
@@ -57,10 +57,13 @@
 				destPlace: "请选择目的地",
 				transferStatus: false, //判断地址是否完成选择
 				columns: [
-					["北京", "南京", "成都", "西安"]
+					["0-宿舍区0", "1-南门", "2-行政南楼", "3-图书馆", "4-教学楼", "5-实验楼", "6-体育馆", "7-活动中心", "8-宿舍区1", "9-宿舍区2",
+						"10-快递中心", "11-校医院", "12-九食堂", "13-气象楼", "14-环境学院", "15-信息中心", "16-游泳馆", "17-美术馆", "18-宿舍区3",
+						"19-宿舍区4", "20-宿舍区5", "21-医学院", "22-建设银行", "23-现工院"
+					]
 				],
-				latitude: 39.909,
-				longitude: 116.39742
+				latitude: 32.113475,
+				longitude: 118.960198
 			};
 		},
 		onLoad() {
@@ -74,7 +77,7 @@
 							code: code
 						}
 					}).then(openid => {
-						console.log(openid);
+						console.log("用户ID:", openid.result);
 						uni.setStorageSync('userId', openid);
 					})
 				}

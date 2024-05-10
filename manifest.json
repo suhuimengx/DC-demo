@@ -1,6 +1,6 @@
 {
-    "name" : "DC-demo",
-    "appid" : "__UNI__8E0C408",
+    "name" : "智慧共乘-NJU特供",
+    "appid" : "__UNI__647400D",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -41,9 +41,13 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* 快应用特有相关 */
@@ -51,12 +55,13 @@
     /* 小程序特有相关 */
     "mp-weixin" : {
         "lazyCodeLoading" : "requiredComponents",
-        "appid" : "wxe7c9d387a0ff3a26",
+        "appid" : "wx293739feee178d9a",
         "setting" : {
             "urlCheck" : false,
             "minified" : true
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {}
     },
     "mp-alipay" : {
         "usingComponents" : true
@@ -70,5 +75,16 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "amap" : {
+                    "key" : "bea6b69cca690ccac0b14c18514e41a3",
+                    "securityJsCode" : "c19a1205918e6e5997e263d46a638004",
+                    "serviceHost" : ""
+                }
+            }
+        }
+    }
 }

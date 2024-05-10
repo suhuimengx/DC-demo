@@ -80,7 +80,10 @@
 				destId: -1, //目的地id（需传输）
 				numDemand: 1, //出行数量需求（需传输）
 				columns: [
-					["北京", "南京", "成都", "西安"]
+					["0-宿舍区0", "1-南门", "2-行政南楼", "3-图书馆", "4-教学楼", "5-实验楼", "6-体育馆", "7-活动中心", "8-宿舍区1", "9-宿舍区2",
+						"10-快递中心", "11-校医院", "12-九食堂", "13-气象楼", "14-环境学院", "15-信息中心", "16-游泳馆", "17-美术馆", "18-宿舍区3",
+						"19-宿舍区4", "20-宿舍区5", "21-医学院", "22-建设银行", "23-现工院"
+					]
 				],
 				//横向两端排列形式数据
 				promptPickList: [{
@@ -97,8 +100,8 @@
 				waitTime: 0, //出发等待时间限度(需传输)
 				showDeparturePicker: false, //控制出发时间选择器显示
 				showArrivalPicker: false, //控制出发时间选择器显示
-				DepartureTime: Number(new Date()), //出发时间（需传输）
-				ArrivalTime: -1 //到达时间，确认订单时若为-1，则不予通过（需传输）
+				DepartureTime: new Date(), //出发时间（需传输）
+				ArrivalTime: new Date(), //到达时间，确认订单时若为-1，则不予通过（需传输）
 			};
 		},
 		onReady() {
@@ -109,6 +112,12 @@
 			console.log(res);
 			this.originId = res.originId;
 			this.destId = res.destId;
+			this.DepartureTime.setHours(7);
+			this.DepartureTime.setMinutes(20);
+			this.ArrivalTime.setHours(7);
+			this.ArrivalTime.setMinutes(20);
+			this.DepartureTime = Number(this.DepartureTime);
+			this.ArrivalTime = Number(this.ArrivalTime);
 		},
 		methods: {
 			//返回上一级
@@ -170,7 +179,7 @@
 					}).then(res => {
 						//将订单id添加到item对象中
 						item.orderId = res.result.id;
-						console.log(item);
+						console.log(res);
 						this.saveHistory(item);
 					})
 					uni.switchTab({

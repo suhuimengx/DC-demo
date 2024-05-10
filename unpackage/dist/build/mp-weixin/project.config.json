@@ -19,9 +19,9 @@
     "condition": false
   },
   "compileType": "miniprogram",
-  "libVersion": "2.30.3",
+  "libVersion": "3.0.0",
   "appid": "wxe7c9d387a0ff3a26",
-  "projectname": "DC-demo",
+  "projectname": "智慧共乘-NJU特供",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",

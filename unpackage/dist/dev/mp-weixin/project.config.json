@@ -11,17 +11,17 @@
     "minified": true,
     "newFeature": true,
     "bigPackageSizeSupport": true,
+    "ignoreUploadUnusedFiles": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    },
-    "condition": false
+    }
   },
   "compileType": "miniprogram",
   "libVersion": "",
-  "appid": "wxe7c9d387a0ff3a26",
-  "projectname": "DC-demo",
+  "appid": "wx293739feee178d9a",
+  "projectname": "智慧共乘-NJU特供",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
