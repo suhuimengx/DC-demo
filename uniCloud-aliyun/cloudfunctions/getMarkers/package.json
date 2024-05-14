@@ -1,0 +1,7 @@
+{
+  "name": "getMarkers",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

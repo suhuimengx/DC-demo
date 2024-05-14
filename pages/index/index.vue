@@ -10,7 +10,7 @@
 		</u-navbar>
 		<!-- 2.简略地图部分 -->
 		<view class="map">
-			<map style="width: 100%; height: 800rpx;" :latitude="latitude" :longitude="longitude" enable-satellite="true"></map>
+			<map style="width: 100%; height: 800rpx;" :latitude="map_center_latitude" :longitude="map_center_longitude" enable-satellite="true" id="map" :markers="markers"></map>
 		</view>
 		<!-- 3.地址框部分 -->
 		<!-- 3.1选择出发地 -->
@@ -48,6 +48,8 @@
 	export default {
 		data() {
 			return {
+				markers_width:20,
+				markers_height:30,
 				mapSrc: 'https://cdn.uviewui.com/uview/album/1.jpg',
 				showOrign: false,
 				showDest: false,
@@ -62,8 +64,37 @@
 						"19-宿舍区4", "20-宿舍区5", "21-医学院", "22-建设银行", "23-现工院"
 					]
 				],
-				latitude: 32.113475,
-				longitude: 118.960198
+				map_center_latitude: 32.113475,
+				map_center_longitude: 118.960198,
+				markers:[
+					{
+						id:111,
+						latitude: 32.113475,
+						longitude: 118.960198,
+						width:20,
+						height:30
+					},
+					{
+						id:222,
+						latitude: 32.11355,
+						longitude: 118.960198,
+						width:20,
+						height:30
+					}
+				],
+				markers_originPlace:[],
+				markers_originPlace:[
+					{
+						id:10000001,
+						latitude:32.129359,
+						longitude:118.958231,
+						width:20,
+						height:30,
+						iconPath:"/static/icon-pick-up.png",
+						label:{content: "0-宿舍区0",borderWidth: 1,borderColor: '#A84335',x:30,y:30,bgColor:"#E6852C"}
+					}
+				],
+				timer:null
 			};
 		},
 		onLoad() {
@@ -82,6 +113,25 @@
 					})
 				}
 			})
+			this.addMarkers()
+		},
+		mounted() {
+			if(this.timer){
+				clearInterval(this.timer)
+			}else{
+				this.timer = setInterval(()=>{
+					console.log("更新位置")
+					uniCloud.callFunction({
+						name:"getMarkers"
+					}).then(res=>{
+						this.markers = res.result.data[0].markers
+						console.log(this.markers)
+					})
+				},5000);
+			}
+		},
+		beforeDestroy() {
+			clearInterval(this.timer)
 		},
 		methods: {
 			//选择出发地后触发事件
@@ -127,6 +177,22 @@
 					}
 				}).then(res => {
 					console.log(res)
+				})
+			},
+			//获取地图中心（测试用）
+			getMapCenter(){
+				this.mapContent = uni.createMapContext("map",this);
+				this.mapContent.getCenterLocation({
+					success:(res)=>{console.log(res)}
+				})
+			},
+			//在地图上添加上车点
+			addMarkers(){
+				this.mapContent = uni.createMapContext("map",this);
+				this.mapContent.addMarkers({
+					markers:this.markers_originPlace,
+				success:()=>{console.log("添加成功")}
+				
 				})
 			}
 		}

@@ -193,10 +193,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni, uniCloud) {
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ 11));
 //
 //
 //
@@ -245,7 +247,10 @@ exports.default = void 0;
 //
 var _default = {
   data: function data() {
-    return {
+    var _ref;
+    return _ref = {
+      markers_width: 20,
+      markers_height: 30,
       mapSrc: 'https://cdn.uviewui.com/uview/album/1.jpg',
       showOrign: false,
       showDest: false,
@@ -258,9 +263,38 @@ var _default = {
       transferStatus: false,
       //判断地址是否完成选择
       columns: [["0-宿舍区0", "1-南门", "2-行政南楼", "3-图书馆", "4-教学楼", "5-实验楼", "6-体育馆", "7-活动中心", "8-宿舍区1", "9-宿舍区2", "10-快递中心", "11-校医院", "12-九食堂", "13-气象楼", "14-环境学院", "15-信息中心", "16-游泳馆", "17-美术馆", "18-宿舍区3", "19-宿舍区4", "20-宿舍区5", "21-医学院", "22-建设银行", "23-现工院"]],
-      latitude: 32.113475,
-      longitude: 118.960198
-    };
+      map_center_latitude: 32.113475,
+      map_center_longitude: 118.960198,
+      markers: [{
+        id: 111,
+        latitude: 32.113475,
+        longitude: 118.960198,
+        width: 20,
+        height: 30
+      }, {
+        id: 222,
+        latitude: 32.11355,
+        longitude: 118.960198,
+        width: 20,
+        height: 30
+      }],
+      markers_originPlace: []
+    }, (0, _defineProperty2.default)(_ref, "markers_originPlace", [{
+      id: 10000001,
+      latitude: 32.129359,
+      longitude: 118.958231,
+      width: 20,
+      height: 30,
+      iconPath: "/static/icon-pick-up.png",
+      label: {
+        content: "0-宿舍区0",
+        borderWidth: 1,
+        borderColor: '#A84335',
+        x: 30,
+        y: 30,
+        bgColor: "#E6852C"
+      }
+    }]), (0, _defineProperty2.default)(_ref, "timer", null), _ref;
   },
   onLoad: function onLoad() {
     uni.login({
@@ -278,6 +312,26 @@ var _default = {
         });
       }
     });
+    this.addMarkers();
+  },
+  mounted: function mounted() {
+    var _this = this;
+    if (this.timer) {
+      clearInterval(this.timer);
+    } else {
+      this.timer = setInterval(function () {
+        console.log("更新位置");
+        uniCloud.callFunction({
+          name: "getMarkers"
+        }).then(function (res) {
+          _this.markers = res.result.data[0].markers;
+          console.log(_this.markers);
+        });
+      }, 5000);
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    clearInterval(this.timer);
   },
   methods: {
     //选择出发地后触发事件
@@ -323,6 +377,25 @@ var _default = {
         }
       }).then(function (res) {
         console.log(res);
+      });
+    },
+    //获取地图中心（测试用）
+    getMapCenter: function getMapCenter() {
+      this.mapContent = uni.createMapContext("map", this);
+      this.mapContent.getCenterLocation({
+        success: function success(res) {
+          console.log(res);
+        }
+      });
+    },
+    //在地图上添加上车点
+    addMarkers: function addMarkers() {
+      this.mapContent = uni.createMapContext("map", this);
+      this.mapContent.addMarkers({
+        markers: this.markers_originPlace,
+        success: function success() {
+          console.log("添加成功");
+        }
       });
     }
   }
