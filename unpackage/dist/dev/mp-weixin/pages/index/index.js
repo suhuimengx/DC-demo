@@ -281,8 +281,8 @@ var _default = {
       markers_originPlace: []
     }, (0, _defineProperty2.default)(_ref, "markers_originPlace", [{
       id: 10000001,
-      latitude: 32.129359,
-      longitude: 118.958231,
+      latitude: 32.123396,
+      longitude: 118.95174,
       width: 20,
       height: 30,
       iconPath: "/static/icon-pick-up.png",
@@ -290,8 +290,23 @@ var _default = {
         content: "0-宿舍区0",
         borderWidth: 1,
         borderColor: '#A84335',
-        x: 30,
-        y: 30,
+        anchorX: -10,
+        anchorY: 0,
+        bgColor: "#E6852C"
+      }
+    }, {
+      id: 10000002,
+      latitude: 32.110129,
+      longitude: 118.96061,
+      width: 20,
+      height: 30,
+      iconPath: "/static/icon-pick-up.png",
+      label: {
+        content: "1-南门",
+        borderWidth: 1,
+        borderColor: '#A84335',
+        anchorX: -10,
+        anchorY: 0,
         bgColor: "#E6852C"
       }
     }]), (0, _defineProperty2.default)(_ref, "timer", null), _ref;
