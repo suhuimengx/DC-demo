@@ -10,7 +10,7 @@
 		</u-navbar>
 		<!-- 2.简略地图部分 -->
 		<view class="map">
-			<map style="width: 100%; height: 800rpx;" :latitude="map_center_latitude" :longitude="map_center_longitude" enable-satellite="true" id="map" :markers="markers"></map>
+			<map style="width: 100%; height: 800rpx;" :latitude="map_center_latitude" :longitude="map_center_longitude" enable-satellite="true" id="map" :markers="markers_originPlace"></map>
 		</view>
 		<!-- 3.地址框部分 -->
 		<!-- 3.1选择出发地 -->
@@ -85,23 +85,50 @@
 				markers_originPlace:[],
 				markers_originPlace:[
 					{
-						id:10000001,
+						id:0,
 						latitude:32.123396,
 						longitude:118.95174,
 						width:20,
 						height:30,
 						iconPath:"/static/icon-pick-up.png",
-						label:{content: "0-宿舍区0",borderWidth: 1,borderColor: '#A84335',anchorX:-10,anchorY:0,bgColor:"#E6852C"}
+						label:{content: "0-宿舍区0",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
 					},
 					{
-						id:10000002,
+						id:1,
 						latitude:32.110129,
 						longitude:118.96061,
 						width:20,
 						height:30,
 						iconPath:"/static/icon-pick-up.png",
-						label:{content: "1-南门",borderWidth: 1,borderColor: '#A84335',anchorX:-10,anchorY:0,bgColor:"#E6852C"}
+						label:{content: "1-南门",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
 					},
+					{
+						id:2,
+						latitude:32.111454,
+						longitude:118.962545,
+						width:20,
+						height:30,
+						iconPath:"/static/icon-pick-up.png",
+						label:{content: "2-行政南楼",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
+					},
+					{
+						id:3,
+						latitude:32.113041,
+						longitude:118.960575,
+						width:20,
+						height:30,
+						iconPath:"/static/icon-pick-up.png",
+						label:{content: "3-图书馆",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
+					},
+					{
+						id:4,
+						latitude:32.110943,
+						longitude:118.958681,
+						width:20,
+						height:30,
+						iconPath:"/static/icon-pick-up.png",
+						label:{content: "4-教学楼",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
+					}
 				],
 				timer:null
 			};
@@ -125,6 +152,7 @@
 			this.addMarkers()
 		},
 		mounted() {
+			//添加计时器，轮询方式更新小车位置
 			if(this.timer){
 				clearInterval(this.timer)
 			}else{
@@ -134,6 +162,7 @@
 						name:"getMarkers"
 					}).then(res=>{
 						this.markers = res.result.data[0].markers
+						this.updateMarkers()
 						console.log(this.markers)
 					})
 				},5000);
@@ -199,9 +228,18 @@
 			addMarkers(){
 				this.mapContent = uni.createMapContext("map",this);
 				this.mapContent.addMarkers({
-					markers:this.markers_originPlace,
+					markers:this.markers,
 				success:()=>{console.log("添加成功")}
 				
+				})
+			},
+			updateMarkers(){
+				this.mapContent = uni.createMapContext("map",this);
+				this.mapContent.removeMarkers({
+					markerIds:["111","222"]
+				}),
+				this.mapContent.addMarkers({
+					markers:this.markers
 				})
 			}
 		}
