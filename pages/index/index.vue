@@ -66,6 +66,7 @@
 				],
 				map_center_latitude: 32.113475,
 				map_center_longitude: 118.960198,
+				markers_last_time:[],
 				markers:[
 					{
 						id:111,
@@ -82,7 +83,7 @@
 						height:30
 					}
 				],
-				markers_originPlace:[],
+				
 				markers_originPlace:[
 					{
 						id:0,
@@ -158,13 +159,7 @@
 			}else{
 				this.timer = setInterval(()=>{
 					console.log("更新位置")
-					uniCloud.callFunction({
-						name:"getMarkers"
-					}).then(res=>{
-						this.markers = res.result.data[0].markers
-						this.updateMarkers()
-						console.log(this.markers)
-					})
+					this.updatemarkers()
 				},5000);
 			}
 		},
@@ -233,13 +228,34 @@
 				
 				})
 			},
-			updateMarkers(){
+			//更新小车位置
+			updatemarkers(){
+				uniCloud.callFunction({
+					name:"getMarkers"
+				}).then(res=>{
+					console.log(res)
+					this.markers_last_time = this.markers
+					this.markers=res.result
+					this.mapContent = uni.createMapContext("map",this);
+					this.mapContent.removeMarkers({
+						markerIds:["111","222"]
+					}),
+					this.mapContent.addMarkers({
+						markers:this.markers
+					})
+					//console.log(this.markers)
+				})
+				
+			},
+			//平滑移动小车
+			moveMarker(){
 				this.mapContent = uni.createMapContext("map",this);
-				this.mapContent.removeMarkers({
-					markerIds:["111","222"]
-				}),
-				this.mapContent.addMarkers({
-					markers:this.markers
+				this.mapContent.translateMarker({
+					markerId:111,
+					destination:{latitude:32.113041,longitude:118.960575},
+					retate:0,
+					autoRotate:false,
+					duration:1000
 				})
 			}
 		}

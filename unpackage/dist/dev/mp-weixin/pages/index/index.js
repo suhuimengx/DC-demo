@@ -193,12 +193,10 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni, uniCloud) {
 
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ 11));
 //
 //
 //
@@ -247,8 +245,7 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 //
 var _default = {
   data: function data() {
-    var _ref;
-    return _ref = {
+    return {
       markers_width: 20,
       markers_height: 30,
       mapSrc: 'https://cdn.uviewui.com/uview/album/1.jpg',
@@ -265,6 +262,7 @@ var _default = {
       columns: [["0-宿舍区0", "1-南门", "2-行政南楼", "3-图书馆", "4-教学楼", "5-实验楼", "6-体育馆", "7-活动中心", "8-宿舍区1", "9-宿舍区2", "10-快递中心", "11-校医院", "12-九食堂", "13-气象楼", "14-环境学院", "15-信息中心", "16-游泳馆", "17-美术馆", "18-宿舍区3", "19-宿舍区4", "20-宿舍区5", "21-医学院", "22-建设银行", "23-现工院"]],
       map_center_latitude: 32.113475,
       map_center_longitude: 118.960198,
+      markers_last_time: [],
       markers: [{
         id: 111,
         latitude: 32.113475,
@@ -278,83 +276,84 @@ var _default = {
         width: 20,
         height: 30
       }],
-      markers_originPlace: []
-    }, (0, _defineProperty2.default)(_ref, "markers_originPlace", [{
-      id: 0,
-      latitude: 32.123396,
-      longitude: 118.95174,
-      width: 20,
-      height: 30,
-      iconPath: "/static/icon-pick-up.png",
-      label: {
-        content: "0-宿舍区0",
-        borderWidth: 1,
-        borderColor: '#A84335',
-        anchorX: -15,
-        anchorY: 0,
-        bgColor: "#E6852C"
-      }
-    }, {
-      id: 1,
-      latitude: 32.110129,
-      longitude: 118.96061,
-      width: 20,
-      height: 30,
-      iconPath: "/static/icon-pick-up.png",
-      label: {
-        content: "1-南门",
-        borderWidth: 1,
-        borderColor: '#A84335',
-        anchorX: -15,
-        anchorY: 0,
-        bgColor: "#E6852C"
-      }
-    }, {
-      id: 2,
-      latitude: 32.111454,
-      longitude: 118.962545,
-      width: 20,
-      height: 30,
-      iconPath: "/static/icon-pick-up.png",
-      label: {
-        content: "2-行政南楼",
-        borderWidth: 1,
-        borderColor: '#A84335',
-        anchorX: -15,
-        anchorY: 0,
-        bgColor: "#E6852C"
-      }
-    }, {
-      id: 3,
-      latitude: 32.113041,
-      longitude: 118.960575,
-      width: 20,
-      height: 30,
-      iconPath: "/static/icon-pick-up.png",
-      label: {
-        content: "3-图书馆",
-        borderWidth: 1,
-        borderColor: '#A84335',
-        anchorX: -15,
-        anchorY: 0,
-        bgColor: "#E6852C"
-      }
-    }, {
-      id: 4,
-      latitude: 32.110943,
-      longitude: 118.958681,
-      width: 20,
-      height: 30,
-      iconPath: "/static/icon-pick-up.png",
-      label: {
-        content: "4-教学楼",
-        borderWidth: 1,
-        borderColor: '#A84335',
-        anchorX: -15,
-        anchorY: 0,
-        bgColor: "#E6852C"
-      }
-    }]), (0, _defineProperty2.default)(_ref, "timer", null), _ref;
+      markers_originPlace: [{
+        id: 0,
+        latitude: 32.123396,
+        longitude: 118.95174,
+        width: 20,
+        height: 30,
+        iconPath: "/static/icon-pick-up.png",
+        label: {
+          content: "0-宿舍区0",
+          borderWidth: 1,
+          borderColor: '#A84335',
+          anchorX: -15,
+          anchorY: 0,
+          bgColor: "#E6852C"
+        }
+      }, {
+        id: 1,
+        latitude: 32.110129,
+        longitude: 118.96061,
+        width: 20,
+        height: 30,
+        iconPath: "/static/icon-pick-up.png",
+        label: {
+          content: "1-南门",
+          borderWidth: 1,
+          borderColor: '#A84335',
+          anchorX: -15,
+          anchorY: 0,
+          bgColor: "#E6852C"
+        }
+      }, {
+        id: 2,
+        latitude: 32.111454,
+        longitude: 118.962545,
+        width: 20,
+        height: 30,
+        iconPath: "/static/icon-pick-up.png",
+        label: {
+          content: "2-行政南楼",
+          borderWidth: 1,
+          borderColor: '#A84335',
+          anchorX: -15,
+          anchorY: 0,
+          bgColor: "#E6852C"
+        }
+      }, {
+        id: 3,
+        latitude: 32.113041,
+        longitude: 118.960575,
+        width: 20,
+        height: 30,
+        iconPath: "/static/icon-pick-up.png",
+        label: {
+          content: "3-图书馆",
+          borderWidth: 1,
+          borderColor: '#A84335',
+          anchorX: -15,
+          anchorY: 0,
+          bgColor: "#E6852C"
+        }
+      }, {
+        id: 4,
+        latitude: 32.110943,
+        longitude: 118.958681,
+        width: 20,
+        height: 30,
+        iconPath: "/static/icon-pick-up.png",
+        label: {
+          content: "4-教学楼",
+          borderWidth: 1,
+          borderColor: '#A84335',
+          anchorX: -15,
+          anchorY: 0,
+          bgColor: "#E6852C"
+        }
+      }],
+      timer: null
+    };
   },
   onLoad: function onLoad() {
     uni.login({
@@ -382,13 +381,7 @@ var _default = {
     } else {
       this.timer = setInterval(function () {
         console.log("更新位置");
-        uniCloud.callFunction({
-          name: "getMarkers"
-        }).then(function (res) {
-          _this.markers = res.result.data[0].markers;
-          _this.updateMarkers();
-          console.log(_this.markers);
-        });
+        _this.updatemarkers();
       }, 5000);
     }
   },
@@ -460,12 +453,36 @@ var _default = {
         }
       });
     },
-    updateMarkers: function updateMarkers() {
+    //更新小车位置
+    updatemarkers: function updatemarkers() {
+      var _this2 = this;
+      uniCloud.callFunction({
+        name: "getMarkers"
+      }).then(function (res) {
+        console.log(res);
+        _this2.markers_last_time = _this2.markers;
+        _this2.markers = res.result;
+        _this2.mapContent = uni.createMapContext("map", _this2);
+        _this2.mapContent.removeMarkers({
+          markerIds: ["111", "222"]
+        }), _this2.mapContent.addMarkers({
+          markers: _this2.markers
+        });
+        //console.log(this.markers)
+      });
+    },
+    //平滑移动小车
+    moveMarker: function moveMarker() {
       this.mapContent = uni.createMapContext("map", this);
-      this.mapContent.removeMarkers({
-        markerIds: ["111", "222"]
-      }), this.mapContent.addMarkers({
-        markers: this.markers
+      this.mapContent.translateMarker({
+        markerId: 111,
+        destination: {
+          latitude: 32.113041,
+          longitude: 118.960575
+        },
+        retate: 0,
+        autoRotate: false,
+        duration: 1000
       });
     }
   }

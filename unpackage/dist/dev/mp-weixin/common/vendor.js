@@ -9954,10 +9954,10 @@ var S = "development" === "development",
   T = I({
     "address": [
         "127.0.0.1",
-        "172.27.133.178"
+        "172.27.159.174"
     ],
     "debugPort": 9000,
-    "initialLaunchType": "local",
+    "initialLaunchType": "remote",
     "servePort": 7000,
     "skipFiles": [
         "<node_internals>/**",
