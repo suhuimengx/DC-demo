@@ -10,7 +10,7 @@
 		</u-navbar>
 		<!-- 2.简略地图部分 -->
 		<view class="map">
-			<map style="width: 100%; height: 800rpx;" :latitude="map_center_latitude" :longitude="map_center_longitude" enable-satellite="true" id="map" :markers="markers_originPlace"></map>
+			<map style="width: 100%; height: 800rpx;" :latitude="map_center_latitude" :longitude="map_center_longitude" id="map" :markers="markers_originPlace"></map>
 		</view>
 		<!-- 3.地址框部分 -->
 		<!-- 3.1选择出发地 -->
@@ -39,7 +39,7 @@
 			<u-button text="订单详情" type="primary" icon="thumb-up" @click="goDetail" shape="circle" color="#e8627b"
 				size="large"></u-button>
 		</view>
-		<u-toast ref="uToast"></u-toast>
+		<u-toast ref="uToast_index"></u-toast>
 
 	</view>
 </template>
@@ -48,6 +48,7 @@
 	export default {
 		data() {
 			return {
+				src_label_origin:"/static/icon-pick-up",
 				markers_width:20,
 				markers_height:30,
 				mapSrc: 'https://cdn.uviewui.com/uview/album/1.jpg',
@@ -68,68 +69,16 @@
 				map_center_longitude: 118.960198,
 				markers_last_time:[],
 				markers:[
-					{
-						id:111,
-						latitude: 32.113475,
-						longitude: 118.960198,
-						width:20,
-						height:30
-					},
-					{
-						id:222,
-						latitude: 32.11355,
-						longitude: 118.960198,
-						width:20,
-						height:30
-					}
+					{id:111,latitude: 32.113475,longitude: 118.960198,width:20,height:30},
+					{id:222,latitude: 32.11355,longitude: 118.960198,width:20,height:30}
 				],
 				
 				markers_originPlace:[
-					{
-						id:0,
-						latitude:32.123396,
-						longitude:118.95174,
-						width:20,
-						height:30,
-						iconPath:"/static/icon-pick-up.png",
-						label:{content: "0-宿舍区0",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
-					},
-					{
-						id:1,
-						latitude:32.110129,
-						longitude:118.96061,
-						width:20,
-						height:30,
-						iconPath:"/static/icon-pick-up.png",
-						label:{content: "1-南门",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
-					},
-					{
-						id:2,
-						latitude:32.111454,
-						longitude:118.962545,
-						width:20,
-						height:30,
-						iconPath:"/static/icon-pick-up.png",
-						label:{content: "2-行政南楼",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
-					},
-					{
-						id:3,
-						latitude:32.113041,
-						longitude:118.960575,
-						width:20,
-						height:30,
-						iconPath:"/static/icon-pick-up.png",
-						label:{content: "3-图书馆",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
-					},
-					{
-						id:4,
-						latitude:32.110943,
-						longitude:118.958681,
-						width:20,
-						height:30,
-						iconPath:"/static/icon-pick-up.png",
-						label:{content: "4-教学楼",borderWidth: 1,borderColor: '#A84335',anchorX:-15,anchorY:0,bgColor:"#E6852C"}
-					}
+					{id:0,latitude:32.123396,longitude:118.95174,width:20,height:30,iconPath:this.src_label_origin,label:{content: "0-宿舍区0",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}},
+					{id:1,latitude:32.110129,longitude:118.96061,width:20,height:30,iconPath:this.src_label_origin,label:{content: "1-南门",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}},
+					{id:2,latitude:32.111454,longitude:118.962545,width:20,height:30,iconPath:this.src_label_origin,label:{content: "2-行政南楼",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}},
+					{id:3,latitude:32.113041,longitude:118.960575,width:20,height:30,iconPath:this.src_label_origin,label:{content: "3-图书馆",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}},
+					{id:4,latitude:32.110943,longitude:118.958681,width:20,height:30,iconPath:this.src_label_origin,label:{content: "4-教学楼",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}}
 				],
 				timer:null
 			};
@@ -151,6 +100,17 @@
 				}
 			})
 			this.addMarkers()
+		},
+		onShow() {
+			if(getApp().globalData.executeFunction)
+			{
+				this.$refs.uToast_index.show({
+					type: 'loading',
+					position: "bottom",
+					message: "请等待接单~",
+					duration: 2100
+				})
+			}
 		},
 		mounted() {
 			//添加计时器，轮询方式更新小车位置
@@ -174,6 +134,7 @@
 				this.originIndex = res.indexs[0];
 				this.originPlace = res.value[0];
 				console.log('originIndex', this.originIndex)
+				this.moveMap(this.markers_originPlace[this.originIndex])
 			},
 			//选择目的地后触发事件
 			confirmDest(res) {
@@ -182,12 +143,21 @@
 				this.destIndex = res.indexs[0];
 				this.destPlace = res.value[0];
 				console.log('destIndex', this.destIndex);
+				
+				this.mapContent = uni.createMapContext("map",this);
+				this.mapContent.includePoints({
+					points:[
+						{latitude:this.markers_originPlace[this.originIndex].latitude,longitude:this.markers_originPlace[this.originIndex].longitude},
+						{latitude:this.markers_originPlace[this.destIndex].latitude,longitude:this.markers_originPlace[this.destIndex].longitude}
+					],
+					padding:[50,50,50,50]
+				})
 			},
 			//跳转订单详情信息页面（页面detail）
 			goDetail() {
 				if (this.originIndex == -1 || this.destIndex == -1) {
 					this.transferStatus = false;
-					this.$refs.uToast.show({
+					this.$refs.uToast_index.show({
 						type: 'warning',
 						position: "bottom",
 						message: "请选择出发地和目的地~",
@@ -195,6 +165,7 @@
 					})
 				} else {
 					this.transferStatus = true;
+					
 					uni.navigateTo({
 						//向detail页面传递 起始地id和目的地id
 						url: `/pages/detail/detail?originId=${this.originIndex}&destId=${this.destIndex}`
@@ -219,7 +190,7 @@
 					success:(res)=>{console.log(res)}
 				})
 			},
-			//在地图上添加上车点
+			//在地图上添加markers
 			addMarkers(){
 				this.mapContent = uni.createMapContext("map",this);
 				this.mapContent.addMarkers({
@@ -227,6 +198,10 @@
 				success:()=>{console.log("添加成功")}
 				
 				})
+			},
+			//小车移动动画
+			moveAnimation(ori_marker,des_marker){
+				
 			},
 			//更新小车位置
 			updatemarkers(){
@@ -257,6 +232,12 @@
 					autoRotate:false,
 					duration:1000
 				})
+			},
+			moveMap(res){
+				console.log(res)
+				this.map_center_latitude = res.latitude
+				this.map_center_longitude = res.longitude
+				console.log(res.latitude)
 			}
 		}
 	}

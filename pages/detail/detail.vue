@@ -69,6 +69,7 @@
 				size="large"></u-button>
 			<u-toast ref="uToast"></u-toast>
 		</view>
+		<u-toast ref="uToast_detail"></u-toast>
 	</view>
 </template>
 
@@ -182,9 +183,19 @@
 						console.log(res);
 						this.saveHistory(item);
 					})
-					uni.switchTab({
-						url: "/pages/index/index"
+					getApp().globalData.executeFunction = true
+					this.$refs.uToast_detail.show({
+						type: 'loading',
+						position: "center",
+						message: "请等待接单~",
+						duration: 2100,
+						complete:()=>{
+							uni.switchTab({
+								url: "/pages/index/index"
+							})
+						}
 					})
+					
 				}
 			},
 			//将出行数据存到本地缓存

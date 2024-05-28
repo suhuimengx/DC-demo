@@ -306,6 +306,7 @@ exports.default = void 0;
 //
 //
 //
+//
 var _default = {
   data: function data() {
     return {
@@ -424,8 +425,17 @@ var _default = {
           console.log(res);
           _this.saveHistory(item);
         });
-        uni.switchTab({
-          url: "/pages/index/index"
+        getApp().globalData.executeFunction = true;
+        this.$refs.uToast_detail.show({
+          type: 'loading',
+          position: "center",
+          message: "请等待接单~",
+          duration: 2100,
+          complete: function complete() {
+            uni.switchTab({
+              url: "/pages/index/index"
+            });
+          }
         });
       }
     },

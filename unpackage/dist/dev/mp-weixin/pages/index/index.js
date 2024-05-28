@@ -246,6 +246,7 @@ exports.default = void 0;
 var _default = {
   data: function data() {
     return {
+      src_label_origin: "/static/icon-pick-up",
       markers_width: 20,
       markers_height: 30,
       mapSrc: 'https://cdn.uviewui.com/uview/album/1.jpg',
@@ -282,14 +283,16 @@ var _default = {
         longitude: 118.95174,
         width: 20,
         height: 30,
-        iconPath: "/static/icon-pick-up.png",
+        iconPath: this.src_label_origin,
         label: {
           content: "0-宿舍区0",
           borderWidth: 1,
-          borderColor: '#A84335',
-          anchorX: -15,
+          borderColor: '#C8F2C1',
+          anchorX: -20,
           anchorY: 0,
-          bgColor: "#E6852C"
+          bgColor: "#C8F2C1",
+          borderRadius: 15,
+          padding: 2
         }
       }, {
         id: 1,
@@ -297,14 +300,16 @@ var _default = {
         longitude: 118.96061,
         width: 20,
         height: 30,
-        iconPath: "/static/icon-pick-up.png",
+        iconPath: this.src_label_origin,
         label: {
           content: "1-南门",
           borderWidth: 1,
-          borderColor: '#A84335',
-          anchorX: -15,
+          borderColor: '#C8F2C1',
+          anchorX: -20,
           anchorY: 0,
-          bgColor: "#E6852C"
+          bgColor: "#C8F2C1",
+          borderRadius: 15,
+          padding: 2
         }
       }, {
         id: 2,
@@ -312,14 +317,16 @@ var _default = {
         longitude: 118.962545,
         width: 20,
         height: 30,
-        iconPath: "/static/icon-pick-up.png",
+        iconPath: this.src_label_origin,
         label: {
           content: "2-行政南楼",
           borderWidth: 1,
-          borderColor: '#A84335',
-          anchorX: -15,
+          borderColor: '#C8F2C1',
+          anchorX: -20,
           anchorY: 0,
-          bgColor: "#E6852C"
+          bgColor: "#C8F2C1",
+          borderRadius: 15,
+          padding: 2
         }
       }, {
         id: 3,
@@ -327,14 +334,16 @@ var _default = {
         longitude: 118.960575,
         width: 20,
         height: 30,
-        iconPath: "/static/icon-pick-up.png",
+        iconPath: this.src_label_origin,
         label: {
           content: "3-图书馆",
           borderWidth: 1,
-          borderColor: '#A84335',
-          anchorX: -15,
+          borderColor: '#C8F2C1',
+          anchorX: -20,
           anchorY: 0,
-          bgColor: "#E6852C"
+          bgColor: "#C8F2C1",
+          borderRadius: 15,
+          padding: 2
         }
       }, {
         id: 4,
@@ -342,14 +351,16 @@ var _default = {
         longitude: 118.958681,
         width: 20,
         height: 30,
-        iconPath: "/static/icon-pick-up.png",
+        iconPath: this.src_label_origin,
         label: {
           content: "4-教学楼",
           borderWidth: 1,
-          borderColor: '#A84335',
-          anchorX: -15,
+          borderColor: '#C8F2C1',
+          anchorX: -20,
           anchorY: 0,
-          bgColor: "#E6852C"
+          bgColor: "#C8F2C1",
+          borderRadius: 15,
+          padding: 2
         }
       }],
       timer: null
@@ -372,6 +383,16 @@ var _default = {
       }
     });
     this.addMarkers();
+  },
+  onShow: function onShow() {
+    if (getApp().globalData.executeFunction) {
+      this.$refs.uToast_index.show({
+        type: 'loading',
+        position: "bottom",
+        message: "请等待接单~",
+        duration: 2100
+      });
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -396,6 +417,7 @@ var _default = {
       this.originIndex = res.indexs[0];
       this.originPlace = res.value[0];
       console.log('originIndex', this.originIndex);
+      this.moveMap(this.markers_originPlace[this.originIndex]);
     },
     //选择目的地后触发事件
     confirmDest: function confirmDest(res) {
@@ -404,12 +426,23 @@ var _default = {
       this.destIndex = res.indexs[0];
       this.destPlace = res.value[0];
       console.log('destIndex', this.destIndex);
+      this.mapContent = uni.createMapContext("map", this);
+      this.mapContent.includePoints({
+        points: [{
+          latitude: this.markers_originPlace[this.originIndex].latitude,
+          longitude: this.markers_originPlace[this.originIndex].longitude
+        }, {
+          latitude: this.markers_originPlace[this.destIndex].latitude,
+          longitude: this.markers_originPlace[this.destIndex].longitude
+        }],
+        padding: [50, 50, 50, 50]
+      });
     },
     //跳转订单详情信息页面（页面detail）
     goDetail: function goDetail() {
       if (this.originIndex == -1 || this.destIndex == -1) {
         this.transferStatus = false;
-        this.$refs.uToast.show({
+        this.$refs.uToast_index.show({
           type: 'warning',
           position: "bottom",
           message: "请选择出发地和目的地~",
@@ -443,7 +476,7 @@ var _default = {
         }
       });
     },
-    //在地图上添加上车点
+    //在地图上添加markers
     addMarkers: function addMarkers() {
       this.mapContent = uni.createMapContext("map", this);
       this.mapContent.addMarkers({
@@ -453,6 +486,8 @@ var _default = {
         }
       });
     },
+    //小车移动动画
+    moveAnimation: function moveAnimation(ori_marker, des_marker) {},
     //更新小车位置
     updatemarkers: function updatemarkers() {
       var _this2 = this;
@@ -484,6 +519,12 @@ var _default = {
         autoRotate: false,
         duration: 1000
       });
+    },
+    moveMap: function moveMap(res) {
+      console.log(res);
+      this.map_center_latitude = res.latitude;
+      this.map_center_longitude = res.longitude;
+      console.log(res.latitude);
     }
   }
 };
