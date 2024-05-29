@@ -45,10 +45,13 @@
 </template>
 
 <script>
+	import markers_originPlace from '../../static/common/my_data';
+
 	export default {
 		data() {
 			return {
-				src_label_origin:"/static/icon-pick-up",
+				markers_originPlace,
+				src_label_origin:"../../static/icon-pick-up",
 				markers_width:20,
 				markers_height:30,
 				mapSrc: 'https://cdn.uviewui.com/uview/album/1.jpg',
@@ -73,13 +76,6 @@
 					{id:222,latitude: 32.11355,longitude: 118.960198,width:20,height:30}
 				],
 				
-				markers_originPlace:[
-					{id:0,latitude:32.123396,longitude:118.95174,width:20,height:30,iconPath:this.src_label_origin,label:{content: "0-宿舍区0",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}},
-					{id:1,latitude:32.110129,longitude:118.96061,width:20,height:30,iconPath:this.src_label_origin,label:{content: "1-南门",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}},
-					{id:2,latitude:32.111454,longitude:118.962545,width:20,height:30,iconPath:this.src_label_origin,label:{content: "2-行政南楼",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}},
-					{id:3,latitude:32.113041,longitude:118.960575,width:20,height:30,iconPath:this.src_label_origin,label:{content: "3-图书馆",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}},
-					{id:4,latitude:32.110943,longitude:118.958681,width:20,height:30,iconPath:this.src_label_origin,label:{content: "4-教学楼",borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2}}
-				],
 				timer:null
 			};
 		},

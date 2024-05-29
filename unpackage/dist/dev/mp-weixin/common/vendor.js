@@ -1557,7 +1557,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -8923,7 +8923,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8944,14 +8944,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -9047,7 +9047,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧共乘-NJU特供","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -30535,6 +30535,463 @@ exports.default = void 0;
 var _default = {
   props: {}
 };
+exports.default = _default;
+
+/***/ }),
+/* 409 */,
+/* 410 */,
+/* 411 */,
+/* 412 */,
+/* 413 */,
+/* 414 */,
+/* 415 */,
+/* 416 */,
+/* 417 */,
+/* 418 */,
+/* 419 */,
+/* 420 */,
+/* 421 */,
+/* 422 */,
+/* 423 */,
+/* 424 */,
+/* 425 */,
+/* 426 */,
+/* 427 */,
+/* 428 */,
+/* 429 */,
+/* 430 */,
+/* 431 */,
+/* 432 */,
+/* 433 */,
+/* 434 */,
+/* 435 */,
+/* 436 */,
+/* 437 */,
+/* 438 */,
+/* 439 */
+/*!*******************************************************************!*\
+  !*** B:/V2X/v2x_app/work/DC-app/DC-demo/static/common/my_data.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var markers_originPlace = [{
+  id: 0,
+  latitude: 32.123396,
+  longitude: 118.95174,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "0-宿舍区0",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 1,
+  latitude: 32.110129,
+  longitude: 118.96061,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "1-南门",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 2,
+  latitude: 32.111454,
+  longitude: 118.962545,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "2-行政南楼",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 3,
+  latitude: 32.113041,
+  longitude: 118.960575,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "3-图书馆",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 4,
+  latitude: 32.110943,
+  longitude: 118.958681,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "4-教学楼",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 5,
+  latitude: 32.110582,
+  longitude: 118.956269,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "5-实验楼",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 6,
+  latitude: 32.111989,
+  longitude: 118.955563,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "6-体育馆",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 7,
+  latitude: 32.112756,
+  longitude: 118.958391,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "7-活动中心",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 8,
+  latitude: 32.113174,
+  longitude: 118.95503,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "8-宿舍区1",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 9,
+  latitude: 32.114389,
+  longitude: 118.954455,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "9-宿舍区2",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 10,
+  latitude: 32.113757,
+  longitude: 118.956523,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "10-快递中心",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 11,
+  latitude: 32.115434,
+  longitude: 118.953885,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "11-校医院",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 12,
+  latitude: 32.116028,
+  longitude: 118.955319,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "12-九食堂",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 13,
+  latitude: 32.117019,
+  longitude: 118.954829,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "13-气象楼",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 14,
+  latitude: 32.117726,
+  longitude: 118.952981,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "14-环境学院",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 15,
+  latitude: 32.115752,
+  longitude: 118.960853,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "15-信息中心",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 16,
+  latitude: 32.115682,
+  longitude: 118.958861,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "16-游泳馆",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 17,
+  latitude: 32.115943,
+  longitude: 118.963012,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "17-美术馆",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 18,
+  latitude: 32.115943,
+  longitude: 118.963012,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "18-宿舍区3",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 19,
+  latitude: 32.116303,
+  longitude: 118.957215,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "19-宿舍区4",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 20,
+  latitude: 32.117487,
+  longitude: 118.956157,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "20-宿舍区5",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 21,
+  latitude: 32.119523,
+  longitude: 118.953967,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "21-医学院",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 22,
+  latitude: 32.122188,
+  longitude: 118.953924,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "22-建设银行",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}, {
+  id: 23,
+  latitude: 32.120131,
+  longitude: 118.956583,
+  width: 20,
+  height: 30,
+  iconPath: "../../static/icon-pick-up",
+  label: {
+    content: "23-现工院",
+    borderWidth: 1,
+    borderColor: '#C8F2C1',
+    anchorX: -20,
+    anchorY: 0,
+    bgColor: "#C8F2C1",
+    borderRadius: 15,
+    padding: 2
+  }
+}];
+var _default = markers_originPlace;
 exports.default = _default;
 
 /***/ })
