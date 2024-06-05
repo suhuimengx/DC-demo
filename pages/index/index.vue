@@ -46,12 +46,12 @@
 
 <script>
 	import markers_originPlace from '../../static/common/my_data';
-
+	
 	export default {
 		data() {
 			return {
 				markers_originPlace,
-				src_label_origin:"../../static/icon-pick-up",
+				//src_label_origin:"../../static/icon-pick-up",
 				markers_width:20,
 				markers_height:30,
 				mapSrc: 'https://cdn.uviewui.com/uview/album/1.jpg',
@@ -80,6 +80,7 @@
 			};
 		},
 		onLoad() {
+			
 			uni.login({
 				provider: 'weixin',
 				success: (res) => {
@@ -110,6 +111,7 @@
 		},
 		mounted() {
 			//添加计时器，轮询方式更新小车位置
+			/*
 			if(this.timer){
 				clearInterval(this.timer)
 			}else{
@@ -118,13 +120,24 @@
 					this.updatemarkers()
 				},5000);
 			}
+			*/
 		},
 		beforeDestroy() {
 			clearInterval(this.timer)
 		},
 		methods: {
+			//辅助函数，判断用户未登录时跳转登录页面
+			checkLogin(){
+				let hostUserInfo = uni.getStorageSync('uni-id-pages-userInfo')||{}
+				if(!hostUserInfo._id){
+					uni.navigateTo({
+						url:"/uni_modules/uni-id-pages/pages/login/login-withpwd?showtoastFlag=true"
+					})
+				}
+			},
 			//选择出发地后触发事件
 			confirmOrigin(res) {
+				this.checkLogin()
 				console.log('confirmOrigin', res)
 				this.showOrign = false;
 				this.originIndex = res.indexs[0];
@@ -134,6 +147,7 @@
 			},
 			//选择目的地后触发事件
 			confirmDest(res) {
+				this.checkLogin()
 				console.log('confirmDest', res)
 				this.showDest = false;
 				this.destIndex = res.indexs[0];
@@ -151,6 +165,7 @@
 			},
 			//跳转订单详情信息页面（页面detail）
 			goDetail() {
+				this.checkLogin()
 				if (this.originIndex == -1 || this.destIndex == -1) {
 					this.transferStatus = false;
 					this.$refs.uToast_index.show({
@@ -218,7 +233,7 @@
 				})
 				
 			},
-			//平滑移动小车
+			//平滑移动小车（test）
 			moveMarker(){
 				this.mapContent = uni.createMapContext("map",this);
 				this.mapContent.translateMarker({

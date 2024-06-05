@@ -74,6 +74,7 @@
 </template>
 
 <script>
+	const db = uniCloud.database()
 	export default {
 		data() {
 			return {
@@ -163,7 +164,17 @@
 						message: '请选择最晚到达时间'
 					})
 				} else {
-					let userid = uni.getStorageSync('userId').result;
+					let item = {
+						//用户id设置有默认值自动填写
+						originId: this.originId, //出发地id
+						destId: this.destId, //目的地id
+						DepartureTime: this.DepartureTime, //预计出发时间，13位时间戳
+						waitTime: this.waitTime, //出发时最长等待时间
+						ArrivalTime: this.ArrivalTime, //最晚到达时间，13位时间戳
+						numDemand: this.numDemand //出行数量需求
+					}
+					db.collection("share_hiking_database").add(item)
+					/*let userid = uni.getStorageSync('userId').result;
 					let item = {
 						userId: userid, //用户id
 						originId: this.originId, //出发地id
@@ -173,6 +184,7 @@
 						ArrivalTime: this.ArrivalTime, //最晚到达时间，13位时间戳
 						numDemand: this.numDemand //出行数量需求
 					}
+					
 					//上传到数据库，上传完成后自动生成订单id
 					uniCloud.callFunction({
 						name: 'UploadData',
@@ -183,6 +195,8 @@
 						console.log(res);
 						this.saveHistory(item);
 					})
+					*/
+					//等待接单
 					getApp().globalData.executeFunction = true
 					this.$refs.uToast_detail.show({
 						type: 'loading',

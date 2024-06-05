@@ -1,0 +1,54 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["userid"],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},	
+		"userid":{
+			"bsonType": "string",
+			"title": "用户id",
+			"foreignKey": "uni-id-users._id",
+			"defaultValue":{
+				"$env": "uid"
+			}
+		},
+		"api":{
+			"title": "调用接口",
+			"bsonType": "string",
+			"description": "描述调用的接口"
+		},
+		"originId":{
+			"bsonType": "string",
+			"title": "起始地Id"
+		},
+		"destId":{
+			"bsonType": "string",
+			"title": "终点Id"
+		},
+		"numDemand":{
+			"bsonType": "int",
+			"title": "需求人数"
+		},
+		"DepartureTime":{
+			"bsonType": "timestamp",
+			"title": "出发时间"
+			
+		},
+		"waitTime":{
+			"bsonType":"int",
+			"title":"等待时间"
+		},
+		"ArrivalTime":{
+			"bsonType": "timestamp",
+			"title": "到达时间"
+		}
+	}
+}

@@ -119,7 +119,7 @@ class Encryptkey extends Storage {
     })
 
     const keyInfo = responseData.key_info_list.find((item) => {
-      return item.version = key.version
+      return item.version === key.version
     })
 
     if (!keyInfo) {
