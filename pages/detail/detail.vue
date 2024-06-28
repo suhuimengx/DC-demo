@@ -173,7 +173,12 @@
 						ArrivalTime: this.ArrivalTime, //最晚到达时间，13位时间戳
 						numDemand: this.numDemand //出行数量需求
 					}
-					db.collection("share_hiking_database").add(item)
+					db.collection("share_hiking_database").add(item).then((res)=>{
+						item.orderId = res.result.id;
+						this.saveHistory(item);
+						getApp().globalData.order_id = res.result.id
+						console.log(getApp().globalData.order_id)
+					})
 					/*let userid = uni.getStorageSync('userId').result;
 					let item = {
 						userId: userid, //用户id

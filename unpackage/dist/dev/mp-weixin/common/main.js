@@ -126,7 +126,8 @@ exports.default = void 0;
 var _init = _interopRequireDefault(__webpack_require__(/*! @/uni_modules/uni-id-pages/init.js */ 42));
 var _default = {
   globalData: {
-    executeFunction: false
+    executeFunction: false,
+    order_id: null
   },
   onLaunch: function onLaunch() {
     console.log('App Launch');

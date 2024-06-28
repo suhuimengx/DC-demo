@@ -1,0 +1,28 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"car_01":{
+			"bsonType": "object",
+			"title": "小车01"
+		},
+		"car_02":{
+			"bsonType": "object",
+			"title": "小车02"
+		},
+		"car_03":{
+			"bsonType": "object",
+			"title": "小车03"
+		}
+	}
+}

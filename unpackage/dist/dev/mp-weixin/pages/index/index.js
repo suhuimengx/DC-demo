@@ -191,13 +191,15 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {
+/* WEBPACK VAR INJECTION */(function(uniCloud, uni) {
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 28));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 31));
 var _my_data = _interopRequireDefault(__webpack_require__(/*! ../../static/common/my_data */ 175));
 //
 //
@@ -245,10 +247,16 @@ var _my_data = _interopRequireDefault(__webpack_require__(/*! ../../static/commo
 //
 //
 //
+//
+
+var db = uniCloud.database();
 var _default = {
   data: function data() {
     return {
+      car_serving: {},
+      car_id: -1,
       markers_originPlace: _my_data.default,
+      marker_icon_path: "/",
       //src_label_origin:"../../static/icon-pick-up",
       markers_width: 20,
       markers_height: 30,
@@ -280,6 +288,13 @@ var _default = {
         width: 20,
         height: 30
       }],
+      car_init: {
+        id: 111,
+        latitude: 5.113475,
+        longitude: 5.960198,
+        width: 20,
+        height: 30
+      },
       timer: null
     };
   },
@@ -299,16 +314,13 @@ var _default = {
         });
       }
     });
-    this.addMarkers();
+    //this.addMarker(this.car_init)
   },
   onShow: function onShow() {
     if (getApp().globalData.executeFunction) {
-      this.$refs.uToast_index.show({
-        type: 'loading',
-        position: "bottom",
-        message: "请等待接单~",
-        duration: 2100
-      });
+      this.waitDispatch();
+      this.renewmarkers();
+      getApp().globalData.executeFunction = false;
     }
   },
   mounted: function mounted() {
@@ -406,60 +418,299 @@ var _default = {
         }
       });
     },
-    //在地图上添加markers
-    addMarkers: function addMarkers() {
+    //在地图上添加marker
+    addMarker: function addMarker(marker1) {
+      console.log(marker1);
+      if (!marker1) {
+        console.log("marker1传入为空");
+      } else {
+        this.mapContent = uni.createMapContext("map", this);
+        this.mapContent.addMarkers({
+          markers: [{
+            id: 111,
+            latitude: marker1.latitude,
+            longitude: marker1.longitude,
+            width: 20,
+            height: 30,
+            label: {
+              content: "".concat(this.car_id, "\u53F7\u8F66"),
+              borderWidth: 1,
+              borderColor: '#C8F2C1',
+              anchorX: -20,
+              anchorY: 0,
+              bgColor: "#C8F2C1",
+              borderRadius: 15,
+              padding: 2
+            },
+            iconPath: '/static/icon/car.png'
+          }],
+          success: function success() {
+            console.log("添加成功");
+          }
+        });
+      }
+    },
+    //订单选择完成后，清除起始点外的marker
+    renewmarkers: function renewmarkers() {
       this.mapContent = uni.createMapContext("map", this);
+      this.mapContent.removeMarkers({
+        markerIds: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
+      });
+      console.log(this.markers_originPlace[this.originIndex]);
       this.mapContent.addMarkers({
-        markers: this.markers,
-        success: function success() {
-          console.log("添加成功");
-        }
+        markers: [{
+          id: this.originIndex,
+          latitude: this.markers_originPlace[this.originIndex].latitude,
+          longitude: this.markers_originPlace[this.originIndex].longitude,
+          width: 30,
+          height: 30,
+          iconPath: "/static/icon/originmarker.png",
+          label: {
+            content: "起点",
+            borderWidth: 1,
+            borderColor: '#C8F2C1',
+            anchorX: -20,
+            anchorY: 0,
+            bgColor: "#C8F2C1",
+            borderRadius: 15,
+            padding: 2
+          }
+        }, {
+          id: this.destIndex,
+          latitude: this.markers_originPlace[this.destIndex].latitude,
+          longitude: this.markers_originPlace[this.destIndex].longitude,
+          width: 30,
+          height: 30,
+          iconPath: "/static/icon/destmarker.png",
+          label: {
+            content: "终点",
+            borderWidth: 1,
+            borderColor: '#C8F2C1',
+            anchorX: -20,
+            anchorY: 0,
+            bgColor: "#C8F2C1",
+            borderRadius: 15,
+            padding: 2
+          }
+        }]
       });
     },
     //小车移动动画
     moveAnimation: function moveAnimation(ori_marker, des_marker) {},
-    //更新小车位置
-    updatemarkers: function updatemarkers() {
-      var _this = this;
+    testapi: function testapi() {
       uniCloud.callFunction({
-        name: "getMarkers"
+        name: "updateMarkers"
       }).then(function (res) {
         console.log(res);
-        _this.markers_last_time = _this.markers;
-        _this.markers = res.result;
-        _this.mapContent = uni.createMapContext("map", _this);
-        _this.mapContent.removeMarkers({
-          markerIds: ["111", "222"]
-        }), _this.mapContent.addMarkers({
-          markers: _this.markers
-        });
-        //console.log(this.markers)
       });
     },
+    /*
     //平滑移动小车（test）
-    moveMarker: function moveMarker() {
-      this.mapContent = uni.createMapContext("map", this);
-      this.mapContent.translateMarker({
-        markerId: 111,
-        destination: {
-          latitude: 32.113041,
-          longitude: 118.960575
-        },
-        retate: 0,
-        autoRotate: false,
-        duration: 1000
-      });
+    moveMarker(){
+    	this.mapContent = uni.createMapContext("map",this);
+    	this.mapContent.translateMarker({
+    		markerId:111,
+    		destination:{latitude:32.113041,longitude:118.960575},
+    		retate:0,
+    		autoRotate:false,
+    		duration:1000
+    	})
     },
+    */
     moveMap: function moveMap(res) {
       console.log(res);
       this.map_center_latitude = res.latitude;
       this.map_center_longitude = res.longitude;
       console.log(res.latitude);
+    },
+    //下单后等待后端处理完成
+    waitDispatch: function waitDispatch() {
+      var _this = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var orderId, orderStatus;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                uni.showToast({
+                  title: '订单处理中~',
+                  icon: 'loading',
+                  duration: 60000 // 设置较长的持续时间，后面会手动关闭
+                });
+                _context.prev = 1;
+                orderId = getApp().globalData.order_id; // 先查询一次订单状态
+                _context.next = 5;
+                return _this.getOrderStatus(orderId);
+              case 5:
+                orderStatus = _context.sent;
+                if (orderStatus.car_id > 0) {
+                  // 如果状态已经变化，立即关闭 Toast 提示框并进行处理
+                  uni.hideToast();
+                  _this.handleOrderStatus(orderStatus.car_id);
+                } else {
+                  // 否则，开始轮询状态变化
+                  _this.pollOrderStatus(orderId);
+                }
+                _context.next = 12;
+                break;
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](1);
+                uni.showToast({
+                  title: '订单处理失败',
+                  icon: 'none'
+                });
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 9]]);
+      }))();
+    },
+    //辅助函数，查询订单信息
+    getOrderStatus: function getOrderStatus(orderId) {
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
+        var db, res;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                db = uniCloud.database();
+                _context2.next = 3;
+                return db.collection('share_hiking_database').doc(orderId).get();
+              case 3:
+                res = _context2.sent;
+                return _context2.abrupt("return", res.result.data[0]);
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    //辅助函数，轮询查询
+    pollOrderStatus: function pollOrderStatus(orderId) {
+      var _this2 = this;
+      var intervalId = setInterval( /*#__PURE__*/(0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
+        var orderStatus;
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return _this2.getOrderStatus(orderId);
+              case 3:
+                orderStatus = _context3.sent;
+                if (orderStatus.car_id > 0) {
+                  // 关闭Toast提示框
+                  uni.hideToast();
+                  // 处理car_id
+                  _this2.handleOrderStatus(orderStatus.car_id);
+                  // 停止轮询
+                  clearInterval(intervalId);
+                }
+                _context3.next = 12;
+                break;
+              case 7:
+                _context3.prev = 7;
+                _context3.t0 = _context3["catch"](0);
+                console.error(_context3.t0);
+                uni.showToast({
+                  title: '订单状态获取失败',
+                  icon: 'none'
+                });
+                // 根据需要停止轮询
+                clearInterval(intervalId);
+              case 12:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 7]]);
+      })), 1000);
+    },
+    //后端对订单处理后执行此函数
+    handleOrderStatus: function handleOrderStatus(carId) {
+      var _this3 = this;
+      this.car_id = carId;
+      console.log(this.car_id);
+      //告知用户服务信息
+      this.$refs.uToast_index.show({
+        type: 'success',
+        position: "bottom",
+        message: "".concat(this.car_id, "\u53F7\u8F66\u5C06\u4E3A\u60A8\u63D0\u4F9B\u670D\u52A1~"),
+        duration: 4100
+      });
+      //设置定时器，轮询更新小车位置
+      if (this.timer) {
+        clearInterval(this.timer);
+      } else {
+        this.timer = setInterval(function () {
+          console.log("更新小车位置");
+          _this3.getCarInfo(_this3.car_id).then(function () {
+            _this3.updataMarkerCar();
+            _this3.mapContent = uni.createMapContext("map", _this3);
+            _this3.mapContent.includePoints({
+              points: [{
+                latitude: _this3.markers_originPlace[_this3.originIndex].latitude,
+                longitude: _this3.markers_originPlace[_this3.originIndex].longitude
+              }, {
+                latitude: _this3.markers_originPlace[_this3.destIndex].latitude,
+                longitude: _this3.markers_originPlace[_this3.destIndex].longitude
+              }, {
+                latitude: _this3.car_serving.latitude,
+                longitude: _this3.car_serving.longitude
+              }],
+              padding: [50, 50, 50, 50]
+            });
+          });
+        }, 5000);
+      }
+    },
+    //获取数据库中小车信息，并存储在this.car_serving中
+    getCarInfo: function getCarInfo() {
+      var _this4 = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
+        var res;
+        return _regenerator.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return db.collection("markers_cars").get();
+              case 2:
+                res = _context4.sent;
+                //console.log(res.result.data[0])
+                if (_this4.car_id === 1) {
+                  _this4.car_serving = res.result.data[0].car_01;
+                } else if (_this4.car_id === 2) {
+                  _this4.car_serving = res.result.data[0].car_02;
+                } else if (_this4.car_id === 3) {
+                  _this4.car_serving = res.result.data[0].car_03;
+                }
+                console.log(_this4.car_serving);
+              case 5:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    //更新map上的car
+    updataMarkerCar: function updataMarkerCar() {
+      this.mapContent = uni.createMapContext("map", this);
+      this.mapContent.removeMarkers({
+        markerIds: ["111"]
+      }), this.addMarker(this.car_serving);
     }
   }
 };
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

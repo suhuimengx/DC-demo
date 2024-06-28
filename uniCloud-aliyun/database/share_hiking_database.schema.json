@@ -49,6 +49,18 @@
 		"ArrivalTime":{
 			"bsonType": "timestamp",
 			"title": "到达时间"
+		},
+		"car_id":{
+			"bsonType": "int",
+			"title": "服务小车id",
+			"defaultValue":-1
+		},
+		"orderTime":{
+			"bsonType": "timestamp",
+			"title": "下单时间",
+			"defaultValue":{
+				"$env": "now"
+			}
 		}
 	}
 }

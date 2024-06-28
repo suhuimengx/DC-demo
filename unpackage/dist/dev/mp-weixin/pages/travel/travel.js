@@ -182,7 +182,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {
+/* WEBPACK VAR INJECTION */(function(uniCloud, uni) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -211,31 +211,53 @@ exports.default = void 0;
 //
 //
 //
+//
+//
+//
+//
+
+var db = uniCloud.database();
 var _default = {
   data: function data() {
     return {
       travelArr: [],
-      columns: [["1栋A区", "1栋B区", "2栋A区", "2栋B区", "3栋A区", "3栋B区", "4栋A区", "4栋B区"]]
+      columns: [["0-宿舍区0", "1-南门", "2-行政南楼", "3-图书馆", "4-教学楼", "5-实验楼", "6-体育馆", "7-活动中心", "8-宿舍区1", "9-宿舍区2", "10-快递中心", "11-校医院", "12-九食堂", "13-气象楼", "14-环境学院", "15-信息中心", "16-游泳馆", "17-美术馆", "18-宿舍区3", "19-宿舍区4", "20-宿舍区5", "21-医学院", "22-建设银行", "23-现工院"]]
     };
   },
   onLoad: function onLoad() {
-    this.getHistory();
+    this.checkLogin();
+    this.getDbInfo();
   },
   onInit: function onInit() {
-    this.getHistory();
+    this.checkLogin();
+    this.getDbInfo();
   },
   onShow: function onShow() {
-    this.getHistory();
+    this.checkLogin();
+    this.getDbInfo();
     console.log(this.travelArr);
   },
   methods: {
-    getHistory: function getHistory() {
-      this.travelArr = uni.getStorageSync('travelArr');
+    getDbInfo: function getDbInfo() {
+      var _this = this;
+      db.collection("share_hiking_database").where('userid==$cloudEnv_uid').get().then(function (res) {
+        console.log(res.result.data);
+        _this.travelArr = res.result.data;
+      });
+    },
+    //辅助函数，判断用户未登录时跳转登录页面
+    checkLogin: function checkLogin() {
+      var hostUserInfo = uni.getStorageSync('uni-id-pages-userInfo') || {};
+      if (!hostUserInfo._id) {
+        uni.navigateTo({
+          url: "/uni_modules/uni-id-pages/pages/login/login-withpwd?showtoastFlag=true"
+        });
+      }
     }
   }
 };
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

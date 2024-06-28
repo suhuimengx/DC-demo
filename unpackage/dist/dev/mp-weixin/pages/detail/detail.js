@@ -395,6 +395,7 @@ var _default = {
     },
     //确认订单触发事件
     confirmOrder: function confirmOrder() {
+      var _this = this;
       if (this.ArrivalTime == -1) {
         this.$refs.uToast.show({
           message: '请选择最晚到达时间'
@@ -415,7 +416,12 @@ var _default = {
           numDemand: this.numDemand //出行数量需求
         };
 
-        db.collection("share_hiking_database").add(item);
+        db.collection("share_hiking_database").add(item).then(function (res) {
+          item.orderId = res.result.id;
+          _this.saveHistory(item);
+          getApp().globalData.order_id = res.result.id;
+          console.log(getApp().globalData.order_id);
+        });
         /*let userid = uni.getStorageSync('userId').result;
         let item = {
         	userId: userid, //用户id

@@ -1,0 +1,7 @@
+{
+  "name": "updataCarId",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

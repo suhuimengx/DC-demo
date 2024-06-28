@@ -56,6 +56,10 @@
     ]
   },
   "lazyCodeLoading": "requiredComponents",
-  "permission": {},
+  "permission": {
+    "scope.userLocation": {
+      "desc": "与出行有关"
+    }
+  },
   "usingComponents": {}
 }
