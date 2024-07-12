@@ -82,9 +82,17 @@
 					{id:222,latitude: 32.11355,longitude: 118.960198,width:20,height:30}
 				],
 				car_init:{id:111,latitude: 5.113475,longitude: 5.960198,width:20,height:30},
-				timer:null
+				timer:null,
+				order_timer:null,
+				arrivalflag:false,
+				server_id:-1
 			};
 		},
+		
+		onLaunch() {
+			
+		},
+		
 		onLoad() {
 			
 			uni.login({
@@ -127,6 +135,7 @@
 		},
 		beforeDestroy() {
 			clearInterval(this.timer)
+			clearInterval(this.order_timer)
 		},
 		methods: {
 			//辅助方法，判断用户未登录时跳转登录页面
@@ -146,6 +155,7 @@
 				this.originIndex = res.indexs[0];
 				this.originPlace = res.value[0];
 				console.log('originIndex', this.originIndex)
+
 				this.moveMap(this.markers_originPlace[this.originIndex])
 			},
 			//选择目的地后触发事件
@@ -156,7 +166,7 @@
 				this.destIndex = res.indexs[0];
 				this.destPlace = res.value[0];
 				console.log('destIndex', this.destIndex);
-				
+				console.log([String(this.originIndex),String(this.destIndex)])
 				this.mapContent = uni.createMapContext("map",this);
 				this.mapContent.includePoints({
 					points:[
@@ -328,6 +338,7 @@
 			    if (orderStatus.car_id > 0) {
 			      // 如果状态已经变化，立即关闭 Toast 提示框并进行处理
 			      uni.hideToast();
+				  this.server_id = orderStatus.serverId
 			      this.handleOrderStatus(orderStatus.car_id);
 			    } else {
 			      // 否则，开始轮询状态变化
@@ -354,8 +365,11 @@
 			      if (orderStatus.car_id > 0) {
 			        // 关闭Toast提示框
 			        uni.hideToast();
+					//更新server_id
+					this.server_id = orderStatus.serverId
 			        // 处理car_id
 			        this.handleOrderStatus(orderStatus.car_id);
+
 			        // 停止轮询
 			        clearInterval(intervalId);
 			      }
@@ -379,7 +393,7 @@
 					type: 'success',
 					position: "bottom",
 					message: `${this.car_id}号车将为您提供服务~`,
-					duration: 4100
+					duration: 2100
 				})
 				//设置定时器，轮询更新小车位置
 				if(this.timer){
@@ -394,6 +408,56 @@
 								this.addMarker(this.car_serving)
 								init_flag = 0
 							}
+							//判断是否到达本订单的起始点
+							
+							console.log("server_id:"+this.server_id)
+							console.log("car_server_id:"+this.car_serving.server_id)
+							
+							
+							if(this.car_serving.server_id.includes(this.server_id) && this.arrivalflag==false){
+								this.$refs.uToast_index.show({
+									type: 'success',
+									position: "bottom",
+									message: `${this.car_id}号车已到达上车点~`,
+									duration: 2100
+								})
+								this.arrivalflag = true
+							}else if(!this.car_serving.server_id.includes(this.server_id) && this.arrivalflag == true){
+								this.$refs.uToast_index.show({
+									type: 'success',
+									position: "bottom",
+									message: `${this.car_id}号车已到达终点~`,
+									duration: 2100
+								})
+								this.arrivalflag = false
+								//删除地图上的图标，重新显示所有上车点，关闭本次轮询时钟
+								let originIndex =String(this.originIndex)
+								let destIndex = String(this.destIndex)
+								this.mapContent = uni.createMapContext("map",this);
+								this.mapContent.removeMarkers({
+									markerIds:["111",originIndex,destIndex],
+									success: () => {
+									        console.log('移除成功');
+									    },
+									fail: (err) => {
+									        console.error('移除失败:', err);
+									    }
+
+								})
+								this.mapContent.addMarkers({
+									markers:markers_originPlace,
+									
+								})
+								clearInterval(this.timer)
+							}
+							
+							
+							
+							
+							
+							
+							
+							//地图上更新小车位置
 							this.moveCar(111,this.car_serving)
 							this.mapContent = uni.createMapContext("map",this);
 							this.mapContent.includePoints({
@@ -426,6 +490,7 @@
 				
 			},
 			//更新map上的car
+			/*
 			updataMarkerCar(){
 				this.mapContent = uni.createMapContext("map",this);
 				this.mapContent.removeMarkers({
@@ -433,6 +498,7 @@
 				}),
 				this.addMarker(this.car_serving)
 			}
+			*/
 		}
 		
 	}

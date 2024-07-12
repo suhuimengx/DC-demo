@@ -9,7 +9,8 @@ exports.main = async (event, context) => {
 	const data = JSON.parse(event.body)
 	const orderinfo = data.info
 	res = await db.collection("share_hiking_database").doc(orderinfo.order_id).update({
-		car_id:orderinfo.car_id
+		car_id:orderinfo.car_id,
+		serverId:orderinfo.server_id
 	})
 	return res
 };

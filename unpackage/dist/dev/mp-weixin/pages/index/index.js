@@ -297,9 +297,13 @@ var _default = {
         width: 20,
         height: 30
       },
-      timer: null
+      timer: null,
+      order_timer: null,
+      arrivalflag: false,
+      server_id: -1
     };
   },
+  onLaunch: function onLaunch() {},
   onLoad: function onLoad() {
     uni.login({
       provider: 'weixin',
@@ -340,6 +344,7 @@ var _default = {
   },
   beforeDestroy: function beforeDestroy() {
     clearInterval(this.timer);
+    clearInterval(this.order_timer);
   },
   methods: {
     //辅助方法，判断用户未登录时跳转登录页面
@@ -369,6 +374,7 @@ var _default = {
       this.destIndex = res.indexs[0];
       this.destPlace = res.value[0];
       console.log('destIndex', this.destIndex);
+      console.log([String(this.originIndex), String(this.destIndex)]);
       this.mapContent = uni.createMapContext("map", this);
       this.mapContent.includePoints({
         points: [{
@@ -565,6 +571,7 @@ var _default = {
                 if (orderStatus.car_id > 0) {
                   // 如果状态已经变化，立即关闭 Toast 提示框并进行处理
                   uni.hideToast();
+                  _this.server_id = orderStatus.serverId;
                   _this.handleOrderStatus(orderStatus.car_id);
                 } else {
                   // 否则，开始轮询状态变化
@@ -626,8 +633,11 @@ var _default = {
                 if (orderStatus.car_id > 0) {
                   // 关闭Toast提示框
                   uni.hideToast();
+                  //更新server_id
+                  _this2.server_id = orderStatus.serverId;
                   // 处理car_id
                   _this2.handleOrderStatus(orderStatus.car_id);
+
                   // 停止轮询
                   clearInterval(intervalId);
                 }
@@ -661,7 +671,7 @@ var _default = {
         type: 'success',
         position: "bottom",
         message: "".concat(this.car_id, "\u53F7\u8F66\u5C06\u4E3A\u60A8\u63D0\u4F9B\u670D\u52A1~"),
-        duration: 4100
+        duration: 2100
       });
       //设置定时器，轮询更新小车位置
       if (this.timer) {
@@ -676,6 +686,46 @@ var _default = {
               _this3.addMarker(_this3.car_serving);
               init_flag = 0;
             }
+            //判断是否到达本订单的起始点
+
+            console.log("server_id:" + _this3.server_id);
+            console.log("car_server_id:" + _this3.car_serving.server_id);
+            if (_this3.car_serving.server_id.includes(_this3.server_id) && _this3.arrivalflag == false) {
+              _this3.$refs.uToast_index.show({
+                type: 'success',
+                position: "bottom",
+                message: "".concat(_this3.car_id, "\u53F7\u8F66\u5DF2\u5230\u8FBE\u4E0A\u8F66\u70B9~"),
+                duration: 2100
+              });
+              _this3.arrivalflag = true;
+            } else if (!_this3.car_serving.server_id.includes(_this3.server_id) && _this3.arrivalflag == true) {
+              _this3.$refs.uToast_index.show({
+                type: 'success',
+                position: "bottom",
+                message: "".concat(_this3.car_id, "\u53F7\u8F66\u5DF2\u5230\u8FBE\u7EC8\u70B9~"),
+                duration: 2100
+              });
+              _this3.arrivalflag = false;
+              //删除地图上的图标，重新显示所有上车点，关闭本次轮询时钟
+              var originIndex = String(_this3.originIndex);
+              var destIndex = String(_this3.destIndex);
+              _this3.mapContent = uni.createMapContext("map", _this3);
+              _this3.mapContent.removeMarkers({
+                markerIds: ["111", originIndex, destIndex],
+                success: function success() {
+                  console.log('移除成功');
+                },
+                fail: function fail(err) {
+                  console.error('移除失败:', err);
+                }
+              });
+              _this3.mapContent.addMarkers({
+                markers: _my_data.default
+              });
+              clearInterval(_this3.timer);
+            }
+
+            //地图上更新小车位置
             _this3.moveCar(111, _this3.car_serving);
             _this3.mapContent = uni.createMapContext("map", _this3);
             _this3.mapContent.includePoints({
@@ -723,14 +773,16 @@ var _default = {
           }
         }, _callee4);
       }))();
-    },
-    //更新map上的car
-    updataMarkerCar: function updataMarkerCar() {
-      this.mapContent = uni.createMapContext("map", this);
-      this.mapContent.removeMarkers({
-        markerIds: ["111"]
-      }), this.addMarker(this.car_serving);
+    } //更新map上的car
+    /*
+    updataMarkerCar(){
+    	this.mapContent = uni.createMapContext("map",this);
+    	this.mapContent.removeMarkers({
+    		markerIds:["111"]
+    	}),
+    	this.addMarker(this.car_serving)
     }
+    */
   }
 };
 exports.default = _default;
