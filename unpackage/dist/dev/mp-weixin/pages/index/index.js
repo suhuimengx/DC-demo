@@ -248,6 +248,8 @@ var _my_data = _interopRequireDefault(__webpack_require__(/*! ../../static/commo
 //
 //
 //
+//
+//
 
 var db = uniCloud.database();
 var _default = {
@@ -340,7 +342,7 @@ var _default = {
     clearInterval(this.timer);
   },
   methods: {
-    //辅助函数，判断用户未登录时跳转登录页面
+    //辅助方法，判断用户未登录时跳转登录页面
     checkLogin: function checkLogin() {
       var hostUserInfo = uni.getStorageSync('uni-id-pages-userInfo') || {};
       if (!hostUserInfo._id) {
@@ -432,16 +434,9 @@ var _default = {
             longitude: marker1.longitude,
             width: 20,
             height: 30,
-            label: {
-              content: "".concat(this.car_id, "\u53F7\u8F66"),
-              borderWidth: 1,
-              borderColor: '#C8F2C1',
-              anchorX: -20,
-              anchorY: 0,
-              bgColor: "#C8F2C1",
-              borderRadius: 15,
-              padding: 2
-            },
+            /*
+            label:{content: `${this.car_id}号车`,borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2},
+            */
             iconPath: '/static/icon/car.png'
           }],
           success: function success() {
@@ -496,12 +491,36 @@ var _default = {
       });
     },
     //小车移动动画
-    moveAnimation: function moveAnimation(ori_marker, des_marker) {},
+    moveCar: function moveCar(car_id, car_serving) {
+      var destination = {
+        longitude: car_serving.longitude,
+        latitude: car_serving.latitude
+      };
+      var time = 900;
+      this.mapContent = uni.createMapContext("map", this);
+      this.mapContent.translateMarker({
+        markerId: car_id,
+        destination: destination,
+        autoRotate: true,
+        duration: time,
+        moveWithRotate: true,
+        success: function success() {
+          console.log("小车位置更新" + destination);
+        },
+        fail: function fail(err) {
+          console.log("err" + err);
+        }
+      });
+    },
     testapi: function testapi() {
       uniCloud.callFunction({
-        name: "updateMarkers"
+        name: "bdMapTotxMap",
+        data: {
+          latitude: 32.058801,
+          longitude: 118.783740
+        }
       }).then(function (res) {
-        console.log(res);
+        console.log(res.result);
       });
     },
     /*
@@ -630,7 +649,7 @@ var _default = {
             }
           }
         }, _callee3, null, [[0, 7]]);
-      })), 1000);
+      })), 500);
     },
     //后端对订单处理后执行此函数
     handleOrderStatus: function handleOrderStatus(carId) {
@@ -650,24 +669,29 @@ var _default = {
       } else {
         this.timer = setInterval(function () {
           console.log("更新小车位置");
+          var init_flag = 1;
           _this3.getCarInfo(_this3.car_id).then(function () {
-            _this3.updataMarkerCar();
+            //this.updataMarkerCar();
+            if (init_flag) {
+              _this3.addMarker(_this3.car_serving);
+              init_flag = 0;
+            }
+            _this3.moveCar(111, _this3.car_serving);
             _this3.mapContent = uni.createMapContext("map", _this3);
             _this3.mapContent.includePoints({
               points: [{
                 latitude: _this3.markers_originPlace[_this3.originIndex].latitude,
                 longitude: _this3.markers_originPlace[_this3.originIndex].longitude
-              }, {
-                latitude: _this3.markers_originPlace[_this3.destIndex].latitude,
-                longitude: _this3.markers_originPlace[_this3.destIndex].longitude
-              }, {
+              },
+              //{latitude:this.markers_originPlace[this.destIndex].latitude,longitude:this.markers_originPlace[this.destIndex].longitude},
+              {
                 latitude: _this3.car_serving.latitude,
                 longitude: _this3.car_serving.longitude
               }],
               padding: [50, 50, 50, 50]
             });
           });
-        }, 5000);
+        }, 1000);
       }
     },
     //获取数据库中小车信息，并存储在this.car_serving中

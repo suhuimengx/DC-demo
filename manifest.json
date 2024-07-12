@@ -1,5 +1,5 @@
 {
-    "name" : "智慧共乘-NJU特供",
+    "name" : "智慧共乘",
     "appid" : "__UNI__647400D",
     "description" : "",
     "versionName" : "1.0.0",
@@ -55,10 +55,12 @@
     /* 小程序特有相关 */
     "mp-weixin" : {
         "lazyCodeLoading" : "requiredComponents",
-        "appid" : "wx293739feee178d9a",
+        "appid" : "wx64964ec8446b5fcd",
         "setting" : {
             "urlCheck" : false,
-            "minified" : true
+            "minified" : true,
+            "postcss" : false,
+            "es6" : true
         },
         "usingComponents" : true,
         "permission" : {

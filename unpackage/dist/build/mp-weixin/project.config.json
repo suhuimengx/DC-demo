@@ -6,7 +6,7 @@
   },
   "setting": {
     "urlCheck": false,
-    "es6": false,
+    "es6": true,
     "postcss": false,
     "minified": true,
     "newFeature": true,
@@ -15,13 +15,12 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    },
-    "condition": false
+    }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.0.0",
-  "appid": "wxe7c9d387a0ff3a26",
-  "projectname": "智慧共乘-NJU特供",
+  "libVersion": "3.4.9",
+  "appid": "wx64964ec8446b5fcd",
+  "projectname": "智慧共乘",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",

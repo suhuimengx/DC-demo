@@ -1,0 +1,7 @@
+{
+  "name": "bdMapTotxMap",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

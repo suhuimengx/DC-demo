@@ -4,7 +4,7 @@
 		<u-navbar bgColor="#f2c7c0">
 			<view slot="left" class="leftSolt">
 				<u-icon name="map-fill" size="32" color="#000000"></u-icon>
-				<view style="margin-left: 5rpx;margin-right: 8rpx;color: dimgray;font-size: 28rpx;">仙林大道163号</view>
+				<view style="margin-left: 5rpx;margin-right: 8rpx;color: dimgray;font-size: 28rpx;">智慧校园</view>
 				<u-icon name="arrow-down-fill" color="#000000" size="15px"></u-icon>
 			</view>
 		</u-navbar>
@@ -39,7 +39,9 @@
 			<u-button text="订单详情" type="primary" icon="thumb-up" @click="goDetail" shape="circle" color="#e8627b"
 				size="large"></u-button>
 		</view>
+		<!--
 		<button @click="testapi">test</button>
+		-->
 		<u-toast ref="uToast_index"></u-toast>
 
 	</view>
@@ -127,7 +129,7 @@
 			clearInterval(this.timer)
 		},
 		methods: {
-			//辅助函数，判断用户未登录时跳转登录页面
+			//辅助方法，判断用户未登录时跳转登录页面
 			checkLogin(){
 				let hostUserInfo = uni.getStorageSync('uni-id-pages-userInfo')||{}
 				if(!hostUserInfo._id){
@@ -216,7 +218,9 @@
 							longitude:marker1.longitude,
 							width:20,
 							height:30,
+							/*
 							label:{content: `${this.car_id}号车`,borderWidth: 1,borderColor: '#C8F2C1',anchorX:-20,anchorY:0,bgColor:"#C8F2C1",borderRadius:15,padding:2},
+							*/
 							iconPath:'/static/icon/car.png'
 							
 						}],
@@ -256,14 +260,37 @@
 				})
 			},
 			//小车移动动画
-			moveAnimation(ori_marker,des_marker){
+			moveCar(car_id,car_serving){
+				let destination={
+					longitude: car_serving.longitude,
+					latitude:car_serving.latitude
+				};
+				let time = 900
 				
+				this.mapContent = uni.createMapContext("map",this);
+				this.mapContent.translateMarker({
+					markerId:car_id,
+					destination:destination,
+					autoRotate:true,
+					duration:time,
+					moveWithRotate:true,
+					success:()=>{
+						console.log("小车位置更新"+destination)
+					},
+					fail:(err)=>{
+						console.log("err"+err)
+					}
+				})
 			},
 			testapi(){
 				uniCloud.callFunction({
-					name: "updateMarkers",
-				}).then(res => {
-					console.log(res)
+					name:"bdMapTotxMap",
+					data:{
+						latitude:32.058801,
+						longitude:118.783740
+					}
+				}).then((res)=>{
+					console.log(res.result)
 				})
 			},
 			/*
@@ -341,7 +368,7 @@
 			      // 根据需要停止轮询
 			      clearInterval(intervalId);
 			    }
-			  }, 1000); 
+			  }, 500); 
 			},
 			//后端对订单处理后执行此函数
 			handleOrderStatus(carId) {
@@ -360,13 +387,19 @@
 				}else{
 					this.timer = setInterval(()=>{
 						console.log("更新小车位置")
+						let init_flag = 1;
 						this.getCarInfo(this.car_id).then(() => {
-							this.updataMarkerCar();
+							//this.updataMarkerCar();
+							if(init_flag){
+								this.addMarker(this.car_serving)
+								init_flag = 0
+							}
+							this.moveCar(111,this.car_serving)
 							this.mapContent = uni.createMapContext("map",this);
 							this.mapContent.includePoints({
 								points:[
 									{latitude:this.markers_originPlace[this.originIndex].latitude,longitude:this.markers_originPlace[this.originIndex].longitude},
-									{latitude:this.markers_originPlace[this.destIndex].latitude,longitude:this.markers_originPlace[this.destIndex].longitude},
+									//{latitude:this.markers_originPlace[this.destIndex].latitude,longitude:this.markers_originPlace[this.destIndex].longitude},
 									{latitude:this.car_serving.latitude,longitude:this.car_serving.longitude}
 								],
 								padding:[50,50,50,50]
@@ -375,7 +408,7 @@
 						});
 						
 
-					},5000);
+					},1000);
 				}
 			},
 			//获取数据库中小车信息，并存储在this.car_serving中

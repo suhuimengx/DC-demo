@@ -61,6 +61,11 @@
 			"defaultValue":{
 				"$env": "now"
 			}
+		},
+		"serverid":{
+			"bsonType": "int",
+			"title": "染色体编码Id",
+			"defaultValue":-1
 		}
 	}
 }
