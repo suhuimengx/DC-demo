@@ -299,8 +299,9 @@ var _default = {
       },
       timer: null,
       order_timer: null,
-      arrivalflag: false,
-      server_id: -1
+      arrivalflag: 0,
+      server_id: -1,
+      init_flag: 1
     };
   },
   onLaunch: function onLaunch() {},
@@ -507,7 +508,7 @@ var _default = {
       this.mapContent.translateMarker({
         markerId: car_id,
         destination: destination,
-        autoRotate: true,
+        autoRotate: false,
         duration: time,
         moveWithRotate: true,
         success: function success() {
@@ -631,11 +632,8 @@ var _default = {
               case 3:
                 orderStatus = _context3.sent;
                 if (orderStatus.car_id > 0) {
-                  // 关闭Toast提示框
                   uni.hideToast();
-                  //更新server_id
                   _this2.server_id = orderStatus.serverId;
-                  // 处理car_id
                   _this2.handleOrderStatus(orderStatus.car_id);
 
                   // 停止轮询
@@ -651,7 +649,7 @@ var _default = {
                   title: '订单状态获取失败',
                   icon: 'none'
                 });
-                // 根据需要停止轮询
+                // 停止轮询
                 clearInterval(intervalId);
               case 12:
               case "end":
@@ -676,20 +674,22 @@ var _default = {
       //设置定时器，轮询更新小车位置
       if (this.timer) {
         clearInterval(this.timer);
+        console.log("定时器timer已存在");
       } else {
         this.timer = setInterval(function () {
           console.log("更新小车位置");
-          var init_flag = 1;
           _this3.getCarInfo(_this3.car_id).then(function () {
-            //this.updataMarkerCar();
-            if (init_flag) {
+            //每次轮询小车信息后执行的操作
+            if (_this3.init_flag) {
               _this3.addMarker(_this3.car_serving);
-              init_flag = 0;
+              _this3.init_flag = 0;
             }
             //判断是否到达本订单的起始点
 
             console.log("server_id:" + _this3.server_id);
             console.log("car_server_id:" + _this3.car_serving.server_id);
+
+            //判断是否到达起始点
             if (_this3.car_serving.server_id.includes(_this3.server_id) && _this3.arrivalflag == false) {
               _this3.$refs.uToast_index.show({
                 type: 'success',
@@ -698,7 +698,26 @@ var _default = {
                 duration: 2100
               });
               _this3.arrivalflag = true;
-            } else if (!_this3.car_serving.server_id.includes(_this3.server_id) && _this3.arrivalflag == true) {
+            }
+
+            //地图上更新小车位置
+            _this3.moveCar(111, _this3.car_serving);
+            _this3.mapContent = uni.createMapContext("map", _this3);
+            _this3.mapContent.includePoints({
+              points: [{
+                latitude: _this3.markers_originPlace[_this3.originIndex].latitude,
+                longitude: _this3.markers_originPlace[_this3.originIndex].longitude
+              },
+              //{latitude:this.markers_originPlace[this.destIndex].latitude,longitude:this.markers_originPlace[this.destIndex].longitude},
+              {
+                latitude: _this3.car_serving.latitude,
+                longitude: _this3.car_serving.longitude
+              }],
+              padding: [50, 50, 50, 50]
+            });
+
+            //判断是否到达终点
+            if (_this3.car_serving.server_id.includes(-_this3.server_id) && _this3.arrivalflag == true) {
               _this3.$refs.uToast_index.show({
                 type: 'success',
                 position: "bottom",
@@ -722,24 +741,11 @@ var _default = {
               _this3.mapContent.addMarkers({
                 markers: _my_data.default
               });
+              _this3.init_flag = 1;
+              console.log(_this3.init_flag);
               clearInterval(_this3.timer);
+              _this3.timer = null;
             }
-
-            //地图上更新小车位置
-            _this3.moveCar(111, _this3.car_serving);
-            _this3.mapContent = uni.createMapContext("map", _this3);
-            _this3.mapContent.includePoints({
-              points: [{
-                latitude: _this3.markers_originPlace[_this3.originIndex].latitude,
-                longitude: _this3.markers_originPlace[_this3.originIndex].longitude
-              },
-              //{latitude:this.markers_originPlace[this.destIndex].latitude,longitude:this.markers_originPlace[this.destIndex].longitude},
-              {
-                latitude: _this3.car_serving.latitude,
-                longitude: _this3.car_serving.longitude
-              }],
-              padding: [50, 50, 50, 50]
-            });
           });
         }, 1000);
       }

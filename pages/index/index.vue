@@ -10,7 +10,7 @@
 		</u-navbar>
 		<!-- 2.简略地图部分 -->
 		<view class="map">
-			<map style="width: 100%; height: 800rpx;" :latitude="map_center_latitude" :longitude="map_center_longitude" id="map" :markers="markers_originPlace"></map>
+			<map style="width: 100%; height: 800rpx;" :latitude="map_center_latitude" :longitude="map_center_longitude" id="map" :markers="markers_originPlace" :enable-poi="false"></map>
 		</view>
 		<!-- 3.地址框部分 -->
 		<!-- 3.1选择出发地 -->
@@ -84,8 +84,9 @@
 				car_init:{id:111,latitude: 5.113475,longitude: 5.960198,width:20,height:30},
 				timer:null,
 				order_timer:null,
-				arrivalflag:false,
-				server_id:-1
+				arrivalflag:0,
+				server_id:-1,
+				init_flag:1,
 			};
 		},
 		
@@ -281,7 +282,7 @@
 				this.mapContent.translateMarker({
 					markerId:car_id,
 					destination:destination,
-					autoRotate:true,
+					autoRotate:false,
 					duration:time,
 					moveWithRotate:true,
 					success:()=>{
@@ -363,11 +364,8 @@
 			    try {
 			      const orderStatus = await this.getOrderStatus(orderId);
 			      if (orderStatus.car_id > 0) {
-			        // 关闭Toast提示框
 			        uni.hideToast();
-					//更新server_id
 					this.server_id = orderStatus.serverId
-			        // 处理car_id
 			        this.handleOrderStatus(orderStatus.car_id);
 
 			        // 停止轮询
@@ -379,7 +377,7 @@
 			        title: '订单状态获取失败',
 			        icon: 'none'
 			      });
-			      // 根据需要停止轮询
+			      // 停止轮询
 			      clearInterval(intervalId);
 			    }
 			  }, 500); 
@@ -398,22 +396,23 @@
 				//设置定时器，轮询更新小车位置
 				if(this.timer){
 					clearInterval(this.timer)
+					console.log("定时器timer已存在")
 				}else{
 					this.timer = setInterval(()=>{
 						console.log("更新小车位置")
-						let init_flag = 1;
+						
 						this.getCarInfo(this.car_id).then(() => {
-							//this.updataMarkerCar();
-							if(init_flag){
+							//每次轮询小车信息后执行的操作
+							if(this.init_flag){
 								this.addMarker(this.car_serving)
-								init_flag = 0
+								this.init_flag = 0
 							}
 							//判断是否到达本订单的起始点
 							
 							console.log("server_id:"+this.server_id)
 							console.log("car_server_id:"+this.car_serving.server_id)
 							
-							
+							//判断是否到达起始点
 							if(this.car_serving.server_id.includes(this.server_id) && this.arrivalflag==false){
 								this.$refs.uToast_index.show({
 									type: 'success',
@@ -422,12 +421,28 @@
 									duration: 2100
 								})
 								this.arrivalflag = true
-							}else if(!this.car_serving.server_id.includes(this.server_id) && this.arrivalflag == true){
+							}
+							
+							//地图上更新小车位置
+							this.moveCar(111,this.car_serving)
+							this.mapContent = uni.createMapContext("map",this);
+							this.mapContent.includePoints({
+								points:[
+									{latitude:this.markers_originPlace[this.originIndex].latitude,longitude:this.markers_originPlace[this.originIndex].longitude},
+									//{latitude:this.markers_originPlace[this.destIndex].latitude,longitude:this.markers_originPlace[this.destIndex].longitude},
+									{latitude:this.car_serving.latitude,longitude:this.car_serving.longitude}
+								],
+								padding:[50,50,50,50]
+							})
+	
+							//判断是否到达终点
+							if(this.car_serving.server_id.includes(-this.server_id) && this.arrivalflag == true){
 								this.$refs.uToast_index.show({
 									type: 'success',
 									position: "bottom",
 									message: `${this.car_id}号车已到达终点~`,
-									duration: 2100
+									duration: 2100,
+									
 								})
 								this.arrivalflag = false
 								//删除地图上的图标，重新显示所有上车点，关闭本次轮询时钟
@@ -448,26 +463,14 @@
 									markers:markers_originPlace,
 									
 								})
+								this.init_flag = 1
+								console.log(this.init_flag)
 								clearInterval(this.timer)
+								this.timer = null
 							}
 							
 							
-							
-							
-							
-							
-							
-							//地图上更新小车位置
-							this.moveCar(111,this.car_serving)
-							this.mapContent = uni.createMapContext("map",this);
-							this.mapContent.includePoints({
-								points:[
-									{latitude:this.markers_originPlace[this.originIndex].latitude,longitude:this.markers_originPlace[this.originIndex].longitude},
-									//{latitude:this.markers_originPlace[this.destIndex].latitude,longitude:this.markers_originPlace[this.destIndex].longitude},
-									{latitude:this.car_serving.latitude,longitude:this.car_serving.longitude}
-								],
-								padding:[50,50,50,50]
-							})
+
 							
 						});
 						

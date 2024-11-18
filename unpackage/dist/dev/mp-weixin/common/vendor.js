@@ -9954,7 +9954,7 @@ var S = "development" === "development",
   T = I({
     "address": [
         "127.0.0.1",
-        "192.168.31.56"
+        "10.22.102.13"
     ],
     "debugPort": 9000,
     "initialLaunchType": "remote",
@@ -9965,7 +9965,7 @@ var S = "development" === "development",
     ]
 }
 ),
-  C = I([{"provider":"aliyun","spaceName":"unicloud-test","spaceId":"mp-e8d46985-e50c-4bfb-af14-d4dfd054e7b5","clientSecret":"FS7UAMwgKfMoHVsDodtnbg==","endpoint":"https://api.next.bspapp.com"}]) || [],
+  C = I([{"provider":"aliyun","spaceName":"cloud-demo1","spaceId":"mp-6a266bfc-120f-42dc-9c71-1e9d6f643dfa","clientSecret":"O9qyPmYnCZZnJL7X6cJKxg==","endpoint":"https://api.next.bspapp.com"}]) || [],
   x = true;
 var O = "";
 try {
